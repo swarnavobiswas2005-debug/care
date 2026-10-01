@@ -43,7 +43,7 @@ export default function PrivacyMemePage() {
                   width="100%" 
                   height="100%" 
                   frameBorder="0" 
-                  className="absolute inset-0 w-full h-full pointer-events-none" 
+                  className="absolute inset-0 w-full h-full" 
                   allowFullScreen
                 ></iframe>
               </div>
