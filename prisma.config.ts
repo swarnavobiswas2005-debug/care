@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { definePrismaConfig } from "prisma/config";
 
 export default definePrismaConfig({

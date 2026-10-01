@@ -47,7 +47,7 @@ const getYoutubeId = (url: string) => {
 
 // Floating Elements Component
 const FloatingElements = ({ emotion }: { emotion: Emotion }) => {
-  const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string }[]>([]);
+  const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string; delay?: string }[]>([]);
 
   useEffect(() => {
     const newElements = Array.from({ length: 20 }).map((_, i) => ({
