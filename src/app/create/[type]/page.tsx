@@ -112,6 +112,7 @@ function ExperienceBuilderContent() {
   const [message, setMessage] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [template, setTemplate] = useState("classic");
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -127,6 +128,7 @@ function ExperienceBuilderContent() {
             setMessage(content.message || "");
             setYoutubeUrl(content.youtubeUrl || "");
             setTemplate(data.template || "classic");
+            setUploadedImage(content.uploadedImage || null);
           }
         })
         .finally(() => setLoading(false));
@@ -141,7 +143,16 @@ function ExperienceBuilderContent() {
       type,
       template,
       status,
-      content: { recipient, sender, title, message, youtubeUrl, experienceType: type }
+      content: { 
+        recipient, 
+        sender, 
+        title, 
+        message, 
+        youtubeUrl, 
+        experienceType: type,
+        uploadedImage,
+        imageExpiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // 1 week
+      }
     };
 
     try {
@@ -171,6 +182,31 @@ function ExperienceBuilderContent() {
     } catch (e) {} finally {
       setSaving(false);
     }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        let scaleSize = 1;
+        if (img.width > MAX_WIDTH) {
+          scaleSize = MAX_WIDTH / img.width;
+        }
+        canvas.width = img.width * scaleSize;
+        canvas.height = img.height * scaleSize;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        setUploadedImage(canvas.toDataURL('image/jpeg', 0.7)); // compress
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
   };
 
   // Selection tracking
@@ -292,6 +328,26 @@ function ExperienceBuilderContent() {
               </div>
 
               <div className="space-y-2">
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest flex items-center justify-between">
+                  <span>Personal Picture (Optional)</span>
+                  <span className="text-[9px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Deletes in 1 week</span>
+                </label>
+                <div className="flex items-center gap-4">
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="w-full text-sm text-black/60 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary-wine/5 file:text-primary-wine hover:file:bg-primary-wine/10 transition-colors"
+                  />
+                  {uploadedImage && (
+                    <button onClick={() => setUploadedImage(null)} className="text-xs text-red-500 font-medium whitespace-nowrap hover:underline">
+                      Remove
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
                 <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Primary Message</label>
                 <textarea 
                   ref={textRef}
@@ -408,6 +464,12 @@ function ExperienceBuilderContent() {
                    </>
                  )}
                </div>
+
+               {uploadedImage && (
+                 <div className="w-full mt-12 relative rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+                   <img src={uploadedImage} alt="Uploaded" className="w-full h-auto object-cover" />
+                 </div>
+               )}
 
                <div className={`mt-12 text-lg text-center ${emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-600' : 'font-display italic text-[#8B5E66]'}`}>
                  {type === 'apology' ? 'I am so sorry,' :

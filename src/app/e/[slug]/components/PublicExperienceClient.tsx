@@ -303,6 +303,17 @@ export default function PublicExperienceClient({
           {content.message}
         </motion.div>
 
+        {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 2, delay: 0.8 }}
+            className="w-full max-w-xl mt-16 relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10"
+          >
+            <img src={content.uploadedImage} alt="Special memory" className="w-full h-auto object-cover" />
+          </motion.div>
+        )}
+
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
