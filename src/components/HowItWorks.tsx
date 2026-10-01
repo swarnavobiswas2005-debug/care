@@ -5,18 +5,28 @@ import { motion } from "framer-motion";
 const steps = [
   {
     num: "01",
-    title: "Choose your moment",
-    desc: "Pick what you want to say. Apology. Proposal. Anniversary. Birthday. Or simply \"I love you.\"",
+    title: "Choose Your Moment",
+    desc: "From the homepage, select the occasion. Whether it's an Apology, Birthday, or Anniversary, CARE will adapt the visuals, emojis, and sign-offs automatically.",
   },
   {
     num: "02",
-    title: "Make it yours",
-    desc: "Add their name, your name, photos, dates, messages, memories, music, and personal details.",
+    title: "Set the Scene",
+    desc: "Enter their name, your name, and a beautiful headline. These details form the core of your digital letter.",
   },
   {
     num: "03",
-    title: "Send the link",
-    desc: "We'll craft your private romantic webpage. Copy the link. Send it to them. Watch what happens.",
+    title: "Add the Soundtrack",
+    desc: "Paste a YouTube link into the Background Music box. (We highly recommend YouTube so the full, uninterrupted song plays while they read!)",
+  },
+  {
+    num: "04",
+    title: "Write (with AI magic)",
+    desc: "Write your heart out in the Primary Message box. Stuck? Highlight any sentence and ask our CARE AI to make it more romantic, sincere, or grammatically perfect.",
+  },
+  {
+    num: "05",
+    title: "Publish & Share",
+    desc: "Click Publish to generate your magic link. Send it to them, and watch them experience your letter exactly as you intended.",
   }
 ];
 
