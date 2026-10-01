@@ -9,25 +9,25 @@ export default function DemoPage() {
     {
       title: "1. Choose Your Emotion",
       description: "Start by selecting the right feeling for your message. Whether you're apologizing, proposing, or just saying 'I love you', our AI sets the perfect tone and layout.",
-      image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop",
+      image: "/demo-step-1.jpg",
       icon: <Heart size={24} className="text-accent-rose" />
     },
     {
       title: "2. Write with AI Magic",
       description: "Don't know what to say? Highlight any text and let CareAI rewrite it, make it more romantic, or fix the grammar. It's like having a professional poet by your side.",
-      image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop",
+      image: "/demo-step-2.jpg",
       icon: <Sparkles size={24} className="text-accent-blush" />
     },
     {
       title: "3. Craft the Visuals",
       description: "Add your favorite photos, YouTube music, and special dates. Watch as the editor instantly updates to show you exactly what your partner will see.",
-      image: "https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=1200&auto=format&fit=crop",
+      image: "/demo-step-3.jpg",
       icon: <Edit3 size={24} className="text-primary-wine" />
     },
     {
       title: "4. Send the Secret Link",
       description: "Once published, you get a beautiful, secure, uncopiable link. Send it to them via text or email and give them an experience they will never forget.",
-      image: "https://images.unsplash.com/photo-1581337204873-ef36aa186caa?q=80&w=1200&auto=format&fit=crop",
+      image: "/demo-step-4.jpg",
       icon: <Send size={24} className="text-amber-700" />
     }
   ];
