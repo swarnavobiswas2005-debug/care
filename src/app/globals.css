@@ -1,5 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Manrope:wght@400;500;600&family=Playfair+Display:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
-
 @theme inline {
   --color-primary-burgundy: #4A0E1B;
   --color-primary-wine: #2B0810;
@@ -13,10 +13,10 @@
   --color-background: var(--color-primary-wine);
   --color-foreground: var(--color-primary-ivory);
   
-  --font-display: var(--font-playfair);
-  --font-sans: var(--font-manrope);
-  --font-cormorant: var(--font-cormorant);
-  --font-quicksand: var(--font-quicksand);
+  --font-display: "Playfair Display", serif;
+  --font-sans: "Manrope", sans-serif;
+  --font-cormorant: "Cormorant Garamond", serif;
+  --font-quicksand: "Quicksand", sans-serif;
 }
 
 :root {
