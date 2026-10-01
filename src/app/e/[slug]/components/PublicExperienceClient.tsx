@@ -263,7 +263,7 @@ export default function PublicExperienceClient({
       >
         <div className="w-40 h-40 rounded-full bg-gray-200 border-4 border-white shadow-2xl mb-12 overflow-hidden pointer-events-none">
            {/* Fallback image, normally you'd use content.imageUrl */}
-           <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+           <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
         </div>
         
         <p className={`font-display italic text-2xl mb-6 transition-colors duration-1000 ${config.textHighlight}`}>

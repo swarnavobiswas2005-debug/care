@@ -12,7 +12,7 @@ export default function PublishedApologyPage() {
         <div className="absolute inset-0 z-0">
            <div 
              className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-multiply"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544061266-9b5cc1202e84?q=80&w=2000&auto=format&fit=crop')" }}
+             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544061266-9b5cc1202e84?q=40&w=1000&auto=format&fit=crop')" }}
            />
            <div className="absolute inset-0 bg-gradient-to-t from-[#FDFBF7] via-[#FDFBF7]/60 to-transparent" />
         </div>
@@ -51,7 +51,7 @@ export default function PublishedApologyPage() {
           
           <div className="flex items-center gap-4">
              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
-               <img src="https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=200&auto=format&fit=crop" alt="Sender" className="w-full h-full object-cover" />
+               <img src="https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=200&auto=format&fit=crop" alt="Sender" className="w-full h-full object-cover" />
              </div>
              <div>
                <p className="font-display italic text-xl text-[#2B0810]">Yours,</p>
@@ -76,9 +76,9 @@ export default function PublishedApologyPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
            {[
-             "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600&auto=format&fit=crop",
-             "https://images.unsplash.com/photo-1530103862676-de3c9de59f9e?q=80&w=600&auto=format&fit=crop",
-             "https://images.unsplash.com/photo-1606213710777-96a5b678c2e0?q=80&w=600&auto=format&fit=crop"
+             "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=40&w=600&auto=format&fit=crop",
+             "https://images.unsplash.com/photo-1530103862676-de3c9de59f9e?q=40&w=600&auto=format&fit=crop",
+             "https://images.unsplash.com/photo-1606213710777-96a5b678c2e0?q=40&w=600&auto=format&fit=crop"
            ].map((src, i) => (
              <motion.div
                key={i}

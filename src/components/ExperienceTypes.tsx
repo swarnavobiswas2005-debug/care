@@ -11,7 +11,7 @@ const experiences = [
     description: "For when \"I'm sorry\" isn't enough.",
     cta: "Craft an Apology",
     color: "from-primary-burgundy to-primary-wine",
-    image: "https://images.unsplash.com/photo-1506806732259-39c2d0268443?q=80&w=800&auto=format&fit=crop", // Moody leaf
+    image: "https://images.unsplash.com/photo-1506806732259-39c2d0268443?q=40&w=600&auto=format&fit=crop", // Moody leaf
   },
   {
     id: "proposal",
@@ -19,7 +19,7 @@ const experiences = [
     description: "Craft a proposal experience they'll remember.",
     cta: "Craft a Proposal",
     color: "from-[#631425] to-primary-wine",
-    image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800&auto=format&fit=crop", // Rings
+    image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=40&w=600&auto=format&fit=crop", // Rings
   },
   {
     id: "anniversary",
@@ -27,7 +27,7 @@ const experiences = [
     description: "Anniversary, relationship milestones and special moments.",
     cta: "Craft an Anniversary",
     color: "from-[#57101E] to-primary-wine",
-    image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop", // Couple
+    image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=40&w=600&auto=format&fit=crop", // Couple
   },
   {
     id: "just-because",
@@ -35,7 +35,7 @@ const experiences = [
     description: "Sometimes you don't need a reason.",
     cta: "Craft Something",
     color: "from-[#3D0A14] to-primary-wine",
-    image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=800&auto=format&fit=crop", // Hands heart
+    image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=40&w=600&auto=format&fit=crop", // Hands heart
   }
 ];
 
@@ -109,3 +109,4 @@ export function ExperienceTypes() {
     </section>
   );
 }
+

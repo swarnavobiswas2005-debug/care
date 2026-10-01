@@ -42,7 +42,7 @@ export function ProductPreview() {
             <div className="w-full h-80 relative shrink-0">
               <div 
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=2000&auto=format&fit=crop')" }}
+                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=1000&auto=format&fit=crop')" }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#FAF8F5] to-transparent" />
             </div>
@@ -117,3 +117,4 @@ export function ProductPreview() {
     </section>
   );
 }
+

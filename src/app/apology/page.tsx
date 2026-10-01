@@ -18,7 +18,7 @@ export default function ApologyExperiencePage() {
         <div className="absolute inset-0 z-0">
            <div 
              className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544061266-9b5cc1202e84?q=80&w=2000&auto=format&fit=crop')" }}
+             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544061266-9b5cc1202e84?q=40&w=1000&auto=format&fit=crop')" }}
            />
            <div className="absolute inset-0 bg-gradient-to-t from-primary-wine via-primary-wine/80 to-transparent" />
         </div>
@@ -55,3 +55,4 @@ export default function ApologyExperiencePage() {
     </main>
   );
 }
+

@@ -20,13 +20,13 @@ export default function DemoPage() {
     {
       title: "3. Craft the Visuals",
       description: "Add your favorite photos, YouTube music, and special dates. Watch as the editor instantly updates to show you exactly what your partner will see.",
-      image: "https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=1200&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=600&auto=format&fit=crop",
       icon: <Edit3 size={24} className="text-primary-wine" />
     },
     {
       title: "4. Send the Secret Link",
       description: "Once published, you get a beautiful, secure, uncopiable link. Send it to them via text or email and give them an experience they will never forget.",
-      image: "https://images.unsplash.com/photo-1581337204873-ef36aa186caa?q=80&w=1200&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1581337204873-ef36aa186caa?q=40&w=600&auto=format&fit=crop",
       icon: <Send size={24} className="text-amber-700" />
     }
   ];
@@ -144,7 +144,7 @@ export default function DemoPage() {
              </ul>
           </div>
           <div className="flex-1 relative w-full aspect-square md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-             <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1200&auto=format&fit=crop" alt="Couple holding hands" className="w-full h-full object-cover" />
+             <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=40&w=600&auto=format&fit=crop" alt="Couple holding hands" className="w-full h-full object-cover" />
           </div>
         </div>
       </section>
@@ -169,3 +169,4 @@ export default function DemoPage() {
     </main>
   );
 }
+

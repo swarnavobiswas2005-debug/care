@@ -384,7 +384,7 @@ function ExperienceBuilderContent() {
 
              <div className="p-8 flex flex-col items-center text-center mt-12 relative z-10">
                <div className="w-24 h-24 rounded-full bg-gray-200 border-4 border-white shadow-lg mb-6 overflow-hidden">
-                  <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+                  <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
                </div>
                
                <p className="font-display italic text-[#4A0E1B] text-xl mb-2">For {recipient || "Someone Special"}</p>

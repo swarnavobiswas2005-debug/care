@@ -88,7 +88,7 @@ export function Hero() {
             
             {/* Page Content Preview */}
             <div className="flex-1 relative overflow-hidden bg-[#Fdfbf7] flex flex-col items-center p-8">
-              <div className="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center" />
+              <div className="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=1000&auto=format&fit=crop')] bg-cover bg-center" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#Fdfbf7] via-[#Fdfbf7]/80 to-transparent" />
               
               <div className="relative z-10 flex flex-col items-center text-center mt-auto pb-4">
@@ -149,3 +149,4 @@ export function Hero() {
     </section>
   );
 }
+

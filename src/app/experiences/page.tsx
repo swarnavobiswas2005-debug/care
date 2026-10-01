@@ -13,7 +13,7 @@ const experiencesList = [
     cta: "Create My Apology",
     path: "/apology",
     color: "from-primary-burgundy to-primary-wine",
-    image: "https://images.unsplash.com/photo-1506806732259-39c2d0268443?q=80&w=800&auto=format&fit=crop", // Moody leaf
+    image: "https://images.unsplash.com/photo-1506806732259-39c2d0268443?q=40&w=600&auto=format&fit=crop", // Moody leaf
   },
   {
     id: "proposal",
@@ -23,7 +23,7 @@ const experiencesList = [
     path: "/proposal",
     color: "from-[#F9F6F0] to-[#EEDCBE]",
     textColor: "text-primary-wine",
-    image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800&auto=format&fit=crop", // Rings
+    image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=40&w=600&auto=format&fit=crop", // Rings
   },
   {
     id: "anniversary",
@@ -32,7 +32,7 @@ const experiencesList = [
     cta: "Create Our Anniversary",
     path: "/anniversary",
     color: "from-[#4A0E1B] to-[#2B0810]",
-    image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop", // Couple
+    image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=40&w=600&auto=format&fit=crop", // Couple
   },
   {
     id: "birthday",
@@ -42,7 +42,7 @@ const experiencesList = [
     path: "/birthday",
     color: "from-[#E2B6C0] to-[#C46D7D]",
     textColor: "text-primary-wine",
-    image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800&auto=format&fit=crop", // Party/Sparkler
+    image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?q=40&w=600&auto=format&fit=crop", // Party/Sparkler
   },
   {
     id: "love-letter",
@@ -52,7 +52,7 @@ const experiencesList = [
     path: "/love-letter",
     color: "from-[#Fdfbf7] to-[#F5F2F0]",
     textColor: "text-primary-wine",
-    image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=800&auto=format&fit=crop", // Envelope/Letter
+    image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=40&w=600&auto=format&fit=crop", // Envelope/Letter
   },
   {
     id: "just-because",
@@ -61,7 +61,7 @@ const experiencesList = [
     cta: "Create Something",
     path: "/just-because",
     color: "from-[#3D0A14] to-primary-wine",
-    image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=800&auto=format&fit=crop", // Hands heart
+    image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=40&w=600&auto=format&fit=crop", // Hands heart
   }
 ];
 
@@ -134,3 +134,4 @@ export default function ExperiencesPage() {
     </main>
   );
 }
+

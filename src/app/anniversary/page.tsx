@@ -18,7 +18,7 @@ export default function AnniversaryExperiencePage() {
         <div className="absolute inset-0 z-0">
            <div 
              className="absolute inset-0 bg-cover bg-center opacity-[0.15] mix-blend-multiply filter sepia-[0.3]"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1606213710777-96a5b678c2e0?q=80&w=2000&auto=format&fit=crop')" }}
+             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1606213710777-96a5b678c2e0?q=40&w=1000&auto=format&fit=crop')" }}
            />
            <div className="absolute inset-0 bg-gradient-to-t from-[#EBE5D9] via-[#EBE5D9]/80 to-transparent" />
         </div>
@@ -55,3 +55,4 @@ export default function AnniversaryExperiencePage() {
     </main>
   );
 }
+

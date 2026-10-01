@@ -116,7 +116,7 @@ export default function SignupPage() {
 
       {/* Right side - Visual */}
       <div className="hidden lg:block w-1/2 relative bg-primary-burgundy overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=600&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-multiply" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary-wine via-primary-wine/40 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-center p-24 text-center">
           <div className="text-6xl font-display text-white mb-6">CARE</div>
@@ -128,3 +128,4 @@ export default function SignupPage() {
     </main>
   );
 }
+
