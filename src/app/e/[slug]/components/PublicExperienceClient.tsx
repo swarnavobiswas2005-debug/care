@@ -169,7 +169,7 @@ export default function PublicExperienceClient({
   }, []);
 
   const toggleAudio = () => {
-    if (ytId || spotifyData) {
+    if (ytData || spotifyData) {
       setIsPlaying(!isPlaying);
       return;
     }
@@ -187,7 +187,7 @@ export default function PublicExperienceClient({
   const startExperience = () => {
     setHasStarted(true);
     setIsPlaying(true);
-    if (!ytId && !spotifyData && audioRef.current) {
+    if (!ytData && !spotifyData && audioRef.current) {
       audioRef.current.play().catch(err => {
         console.log("Audio autoplay prevented", err);
       });
