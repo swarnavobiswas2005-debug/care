@@ -176,6 +176,15 @@ export default function Dashboard() {
                   <span className="text-2xl group-hover:scale-110 transition-transform">🌙</span>
                   <span className="font-medium text-primary-wine">Just Because</span>
                 </Link>
+                
+                <Link href="/durga-puja" className="col-span-1 sm:col-span-2 mt-2 flex items-center gap-4 p-5 rounded-2xl border-2 border-[#8B0000]/30 bg-[#8B0000]/5 hover:bg-[#8B0000]/10 transition-colors group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 bg-[#8B0000] text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-bl-xl">Limited Edition</div>
+                  <span className="text-3xl group-hover:scale-110 transition-transform">🌸</span>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-[#8B0000] text-lg">Durga Puja</span>
+                    <span className="text-sm text-[#8B0000]/70">For your permanent Ashtami partner</span>
+                  </div>
+                </Link>
               </div>
             </motion.div>
           </div>
