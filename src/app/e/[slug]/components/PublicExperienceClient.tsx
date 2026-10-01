@@ -282,8 +282,11 @@ export default function PublicExperienceClient({
         className="max-w-3xl mx-auto px-6 py-24 flex flex-col items-center text-center relative z-10"
       >
         <div className="w-40 h-40 rounded-full bg-gray-200 border-4 border-white shadow-2xl mb-12 overflow-hidden pointer-events-none">
-           {/* Fallback image, normally you'd use content.imageUrl */}
-           <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+           {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) ? (
+             <img src={content.uploadedImage} alt="Profile" className="w-full h-full object-cover" />
+           ) : (
+             <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+           )}
         </div>
         
         <p className={`font-display italic text-2xl mb-6 transition-colors duration-1000 ${config.textHighlight}`}>
@@ -302,17 +305,6 @@ export default function PublicExperienceClient({
         >
           {content.message}
         </motion.div>
-
-        {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 2, delay: 0.8 }}
-            className="w-full max-w-xl mt-16 relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10"
-          >
-            <img src={content.uploadedImage} alt="Special memory" className="w-full h-auto object-cover" />
-          </motion.div>
-        )}
 
         <motion.div 
           initial={{ opacity: 0 }}

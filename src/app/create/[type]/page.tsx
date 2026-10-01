@@ -188,6 +188,11 @@ function ExperienceBuilderContent() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Please upload a picture smaller than 10MB.");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const img = new window.Image();
@@ -329,7 +334,7 @@ function ExperienceBuilderContent() {
 
               <div className="space-y-2">
                 <label className="text-xs font-bold text-black/40 uppercase tracking-widest flex items-center justify-between">
-                  <span>Personal Picture (Optional)</span>
+                  <span>Profile Picture (Optional)</span>
                   <span className="text-[9px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Deletes in 1 week</span>
                 </label>
                 <div className="flex items-center gap-4">
@@ -447,7 +452,11 @@ function ExperienceBuilderContent() {
 
              <div className="p-8 flex flex-col items-center text-center mt-12 relative z-10">
                <div className="w-24 h-24 rounded-full bg-gray-200 border-4 border-white shadow-lg mb-6 overflow-hidden">
-                  <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+                  {uploadedImage ? (
+                    <img src={uploadedImage} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+                  )}
                </div>
                
                <p className="font-display italic text-[#4A0E1B] text-xl mb-2">For {recipient || "Someone Special"}</p>
@@ -464,12 +473,6 @@ function ExperienceBuilderContent() {
                    </>
                  )}
                </div>
-
-               {uploadedImage && (
-                 <div className="w-full mt-12 relative rounded-2xl overflow-hidden shadow-xl border-4 border-white">
-                   <img src={uploadedImage} alt="Uploaded" className="w-full h-auto object-cover" />
-                 </div>
-               )}
 
                <div className={`mt-12 text-lg text-center ${emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-600' : 'font-display italic text-[#8B5E66]'}`}>
                  {type === 'apology' ? 'I am so sorry,' :
