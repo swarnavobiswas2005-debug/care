@@ -38,17 +38,22 @@ export default function DurgaPujaExperiencePage() {
             <p className="text-xl text-[#8B0000]/70 font-sans max-w-xl mx-auto mb-12">
               For that special person you want to hold hands with on Ashtami.
             </p>
-            <button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  const isLoggedIn = localStorage.getItem("care_auth") === "true";
-                  window.location.href = isLoggedIn ? "/create/durga-puja" : "/login";
-                }
-              }}
-              className="px-10 py-5 bg-[#8B0000] text-white rounded-full text-lg font-medium hover:bg-[#8B0000]/90 transition-colors shadow-2xl"
-            >
-              Craft Ashtami Letter →
-            </button>
+            <div className="relative inline-block group">
+              <button 
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    const isLoggedIn = localStorage.getItem("care_auth") === "true";
+                    window.location.href = isLoggedIn ? "/create/durga-puja" : "/login";
+                  }
+                }}
+                className="inline-flex items-center justify-center px-10 py-5 text-sm font-semibold text-[#8B0000] bg-transparent border border-[#8B0000] uppercase tracking-[0.2em] hover:bg-[#8B0000] hover:text-[#FDFBF7] transition-colors"
+              >
+                CRAFT ASHTAMI LETTER
+              </button>
+              <div className="absolute -bottom-6 right-0 text-2xl font-handwriting text-[#8B0000]/70 -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-300">
+                for you...
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

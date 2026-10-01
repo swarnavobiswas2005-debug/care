@@ -38,17 +38,22 @@ export default function ProposalExperiencePage() {
             <p className="text-xl text-primary-wine/70 font-sans max-w-2xl mx-auto mb-12">
               Turn the moment you've imagined into an experience they'll never forget.
             </p>
-            <button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  const isLoggedIn = localStorage.getItem("care_auth") === "true";
-                  window.location.href = isLoggedIn ? "/create/proposal" : "/login";
-                }
-              }}
-              className="px-10 py-5 bg-primary-wine text-white rounded-full text-lg font-medium hover:bg-primary-burgundy transition-colors shadow-xl shadow-primary-wine/10"
-            >
-              Create My Proposal →
-            </button>
+            <div className="relative inline-block group">
+              <button 
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    const isLoggedIn = localStorage.getItem("care_auth") === "true";
+                    window.location.href = isLoggedIn ? "/create/proposal" : "/login";
+                  }
+                }}
+                className="inline-flex items-center justify-center px-10 py-5 text-sm font-semibold text-primary-wine bg-transparent border border-primary-wine uppercase tracking-[0.2em] hover:bg-primary-wine hover:text-white transition-colors"
+              >
+                CREATE MY PROPOSAL
+              </button>
+              <div className="absolute -bottom-6 right-0 text-2xl font-handwriting text-[#BFA15F] -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-300">
+                for you...
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

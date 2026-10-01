@@ -43,17 +43,22 @@ export default function JustBecauseExperiencePage() {
               Create a little surprise for someone who means everything to you. Combine photos, music, interactive memories, and anything else you can imagine.
             </p>
             
-            <button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  const isLoggedIn = localStorage.getItem("care_auth") === "true";
-                  window.location.href = isLoggedIn ? "/create/just-because" : "/login";
-                }
-              }}
-              className="px-10 py-5 bg-white text-black rounded-full text-lg font-medium hover:scale-105 transition-transform shadow-[0_0_40px_rgba(255,255,255,0.1)]"
-            >
-              Create Something →
-            </button>
+            <div className="relative inline-block group">
+              <button 
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    const isLoggedIn = localStorage.getItem("care_auth") === "true";
+                    window.location.href = isLoggedIn ? "/create/just-because" : "/login";
+                  }
+                }}
+                className="inline-flex items-center justify-center px-10 py-5 text-sm font-semibold text-white bg-transparent border border-white uppercase tracking-[0.2em] hover:bg-white hover:text-[#21060C] transition-colors"
+              >
+                CREATE SOMETHING
+              </button>
+              <div className="absolute -bottom-6 right-0 text-2xl font-handwriting text-accent-rose -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-300">
+                for you...
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

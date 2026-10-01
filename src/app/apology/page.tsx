@@ -38,17 +38,22 @@ export default function ApologyExperiencePage() {
             <p className="text-xl text-primary-ivory/70 font-sans max-w-xl mx-auto mb-12">
               Create a personal experience that says what a text message can't.
             </p>
-            <button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  const isLoggedIn = localStorage.getItem("care_auth") === "true";
-                  window.location.href = isLoggedIn ? "/create/apology" : "/login";
-                }
-              }}
-              className="px-10 py-5 bg-primary-burgundy text-primary-ivory rounded-full text-lg font-medium hover:bg-white hover:text-primary-wine transition-colors shadow-2xl border border-white/20"
-            >
-              Create My Apology →
-            </button>
+            <div className="relative inline-block group">
+              <button 
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    const isLoggedIn = localStorage.getItem("care_auth") === "true";
+                    window.location.href = isLoggedIn ? "/create/apology" : "/login";
+                  }
+                }}
+                className="inline-flex items-center justify-center px-10 py-5 text-sm font-semibold text-primary-ivory bg-transparent border border-primary-ivory uppercase tracking-[0.2em] hover:bg-primary-ivory hover:text-primary-wine transition-colors"
+              >
+                CREATE MY APOLOGY
+              </button>
+              <div className="absolute -bottom-6 right-0 text-2xl font-handwriting text-accent-rose -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-300">
+                for you...
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

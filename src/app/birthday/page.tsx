@@ -47,17 +47,22 @@ export default function BirthdayExperiencePage() {
             <p className="text-xl text-primary-wine/70 font-sans max-w-xl mx-auto mb-12">
               Create a birthday surprise that's more personal than another message.
             </p>
-            <button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  const isLoggedIn = localStorage.getItem("care_auth") === "true";
-                  window.location.href = isLoggedIn ? "/create/birthday" : "/login";
-                }
-              }}
-              className="px-10 py-5 bg-white text-primary-wine rounded-full text-lg font-medium hover:scale-105 transition-transform shadow-xl shadow-accent-rose/10"
-            >
-              Create Their Birthday →
-            </button>
+            <div className="relative inline-block group">
+              <button 
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    const isLoggedIn = localStorage.getItem("care_auth") === "true";
+                    window.location.href = isLoggedIn ? "/create/birthday" : "/login";
+                  }
+                }}
+                className="inline-flex items-center justify-center px-10 py-5 text-sm font-semibold text-primary-wine bg-transparent border border-primary-wine uppercase tracking-[0.2em] hover:bg-primary-wine hover:text-[#FDFBF7] transition-colors"
+              >
+                CREATE THEIR BIRTHDAY
+              </button>
+              <div className="absolute -bottom-6 right-0 text-2xl font-handwriting text-accent-rose -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-300">
+                for you...
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

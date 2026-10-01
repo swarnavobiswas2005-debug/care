@@ -38,17 +38,22 @@ export default function AnniversaryExperiencePage() {
             <p className="text-xl text-primary-wine/70 font-sans max-w-xl mx-auto mb-12">
               Turn your memories into something you can revisit together.
             </p>
-            <button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  const isLoggedIn = localStorage.getItem("care_auth") === "true";
-                  window.location.href = isLoggedIn ? "/create/anniversary" : "/login";
-                }
-              }}
-              className="px-10 py-5 bg-[#4A0E1B] text-[#F9F6F0] rounded-full text-lg font-medium hover:bg-primary-wine transition-colors shadow-2xl"
-            >
-              Create Our Anniversary →
-            </button>
+            <div className="relative inline-block group">
+              <button 
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    const isLoggedIn = localStorage.getItem("care_auth") === "true";
+                    window.location.href = isLoggedIn ? "/create/anniversary" : "/login";
+                  }
+                }}
+                className="inline-flex items-center justify-center px-10 py-5 text-sm font-semibold text-[#4A0E1B] bg-transparent border border-[#4A0E1B] uppercase tracking-[0.2em] hover:bg-[#4A0E1B] hover:text-[#FDFBF7] transition-colors"
+              >
+                CREATE OUR ANNIVERSARY
+              </button>
+              <div className="absolute -bottom-6 right-0 text-2xl font-handwriting text-[#8B5E66] -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-300">
+                for you...
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
