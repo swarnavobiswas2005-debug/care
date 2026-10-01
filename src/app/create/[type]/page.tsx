@@ -267,12 +267,12 @@ function ExperienceBuilderContent() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Background Music (YouTube URL)</label>
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Background Music (YouTube or Spotify URL)</label>
                 <input 
                   type="text" 
                   value={youtubeUrl}
                   onChange={(e) => setYoutubeUrl(e.target.value)}
-                  placeholder="https://youtube.com/watch?v=..."
+                  placeholder="https://youtube.com/... or https://open.spotify.com/track/..."
                   className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
                 />
               </div>

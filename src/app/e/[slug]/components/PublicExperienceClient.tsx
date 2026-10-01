@@ -45,6 +45,12 @@ const getYoutubeId = (url: string) => {
   return match ? match[1] : null;
 };
 
+const getSpotifyData = (url: string) => {
+  if (!url) return null;
+  const match = url.match(/spotify\.com\/(track|album|playlist)\/([a-zA-Z0-9]+)/);
+  return match ? { type: match[1], id: match[2] } : null;
+};
+
 // Floating Elements Component
 const FloatingElements = ({ emotion }: { emotion: Emotion }) => {
   const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string; delay?: string }[]>([]);
@@ -124,6 +130,7 @@ export default function PublicExperienceClient({
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const ytId = getYoutubeId(content.youtubeUrl);
+  const spotifyData = getSpotifyData(content.youtubeUrl);
 
   useEffect(() => {
     // Analyze emotion on mount
@@ -138,7 +145,7 @@ export default function PublicExperienceClient({
   }, []);
 
   const toggleAudio = () => {
-    if (ytId) {
+    if (ytId || spotifyData) {
       setIsPlaying(!isPlaying);
       return;
     }
@@ -156,7 +163,7 @@ export default function PublicExperienceClient({
   const startExperience = () => {
     setHasStarted(true);
     setIsPlaying(true);
-    if (!ytId && audioRef.current) {
+    if (!ytId && !spotifyData && audioRef.current) {
       audioRef.current.play().catch(err => {
         console.log("Audio autoplay prevented", err);
       });
@@ -200,7 +207,7 @@ export default function PublicExperienceClient({
       onContextMenu={(e) => e.preventDefault()}
     >
       
-      {!ytId && (
+      {!ytId && !spotifyData && (
         <audio 
           ref={audioRef}
           src={config.audioUrl}
@@ -214,6 +221,20 @@ export default function PublicExperienceClient({
           allow="autoplay"
           className="hidden"
         />
+      )}
+
+      {spotifyData && isPlaying && (
+        <div className="fixed bottom-6 right-6 z-50 w-[300px] shadow-2xl rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 hover:scale-105">
+          <iframe 
+            src={`https://open.spotify.com/embed/${spotifyData.type}/${spotifyData.id}?utm_source=generator&theme=0`} 
+            width="100%" 
+            height="80" 
+            frameBorder="0" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy"
+            className="block"
+          />
+        </div>
       )}
 
       <FloatingElements emotion={emotion} />
