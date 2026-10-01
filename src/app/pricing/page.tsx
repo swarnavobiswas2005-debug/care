@@ -32,7 +32,7 @@ export default function PricingPage() {
           </h2>
           
           <div className="text-6xl md:text-7xl font-display text-primary-wine mb-8 relative z-10">
-            $0
+            ₹0
             <span className="text-xl text-primary-black/50 font-sans tracking-wide uppercase block mt-2">Forever</span>
           </div>
           
