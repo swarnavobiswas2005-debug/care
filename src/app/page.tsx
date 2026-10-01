@@ -5,6 +5,7 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { ProductPreview } from "@/components/ProductPreview";
 import { TrustSection } from "@/components/TrustSection";
 import { CtaSection } from "@/components/CtaSection";
+import { FaqSection } from "@/components/FaqSection";
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       <HowItWorks />
       <ProductPreview />
       <TrustSection />
+      <FaqSection />
       <CtaSection />
       <Footer />
     </main>
