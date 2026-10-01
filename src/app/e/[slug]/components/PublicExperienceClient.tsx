@@ -241,7 +241,7 @@ export default function PublicExperienceClient({
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="text-center relative z-10 flex flex-col items-center"
         >
-          <div className={`text-sm tracking-[0.3em] uppercase mb-6 font-medium ${isCinematic ? 'text-white/40' : 'text-black/40'}`}>
+          <div className={`text-lg md:text-xl tracking-[0.3em] uppercase mb-6 font-medium ${isCinematic ? 'text-white/40' : 'text-black/40'}`}>
             For {content.recipient || "you"}
           </div>
           <div className={`font-display italic text-5xl md:text-7xl mb-12 ${isCinematic ? 'text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]' : 'text-[#4A0E1B]'}`}>
@@ -332,12 +332,25 @@ export default function PublicExperienceClient({
       )}
       
       <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.8
+            }
+          }
+        }}
         className="max-w-3xl mx-auto px-6 py-24 flex flex-col items-center text-center relative z-20"
       >
-        <div className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-12 relative pointer-events-none bg-white">
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0, scale: 0.8, y: 20 },
+            visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 1.5, ease: "easeOut" } }
+          }}
+          className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-12 relative pointer-events-none bg-white"
+        >
           <div className="w-full h-full rounded-full overflow-hidden bg-gray-200">
              {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) ? (
                <motion.img 
@@ -355,20 +368,33 @@ export default function PublicExperienceClient({
                />
              )}
           </div>
-        </div>
+        </motion.div>
         
-        <p className={`${recipientFont ? recipientFont : `font-display italic text-2xl mb-6 transition-colors duration-1000 ${config.textHighlight}`}`}>
+        <motion.p 
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: "easeOut" } }
+          }}
+          className={`${recipientFont ? recipientFont : `font-display italic text-2xl mb-6 transition-colors duration-1000 ${config.textHighlight}`}`}
+        >
           For {content.recipient || "Someone Special"}
-        </p>
+        </motion.p>
         
-        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${titleFont} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
+        <motion.h1 
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: "easeOut" } }
+          }}
+          className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${titleFont} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}
+        >
           {content.title || "A special message..."}
-        </h1>
+        </motion.h1>
 
         <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 3, delay: 1 }}
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: "easeOut" } }
+          }}
           className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${messageFont} ${isCinematic ? 'text-white/80 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]' : 'text-black/80'}`}
         >
           {content.message}
@@ -376,9 +402,10 @@ export default function PublicExperienceClient({
 
         {content.messageImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 2, delay: 0.8 }}
+            variants={{
+              hidden: { opacity: 0, scale: 0.9, y: 20 },
+              visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 1.5, ease: "easeOut" } }
+            }}
             className={`w-full max-w-xl mt-16 relative rounded-2xl overflow-hidden shadow-2xl ${isCinematic ? 'ring-4 ring-white/10' : 'border-4 border-white'}`}
           >
             <img src={content.messageImage} alt="Special memory" className="w-full h-auto object-cover" />
@@ -386,9 +413,10 @@ export default function PublicExperienceClient({
         )}
 
         <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 1 }}
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: "easeOut" } }
+          }}
           className={`mt-24 text-2xl text-center ${senderFont}`}
         >
           {content.experienceType === 'apology' ? 'I am so sorry,' :
@@ -403,9 +431,10 @@ export default function PublicExperienceClient({
 
         {/* Viral Growth Loop CTA */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 3 }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 1.5, ease: "easeOut", delay: 2 } }
+          }}
           className={`mt-32 pt-16 border-t ${isCinematic ? 'border-white/10' : 'border-black/10'} w-full max-w-xl mx-auto flex flex-col items-center text-center`}
         >
           <p className={`text-sm tracking-[0.3em] uppercase mb-6 font-medium ${isCinematic ? 'text-white/40' : 'text-black/40'}`}>
