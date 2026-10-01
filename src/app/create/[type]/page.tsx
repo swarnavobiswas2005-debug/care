@@ -29,6 +29,14 @@ function determineEmotion(text: string, type?: string): Emotion {
   return "romantic";
 }
 
+const getYoutubeData = (url: string) => {
+  if (!url) return null;
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|.*embed\/))([^&?]*)/);
+  if (!match) return null;
+  const id = match[1];
+  return { id };
+};
+
 const FloatingElements = ({ emotion, type }: { emotion: Emotion, type?: string }) => {
   const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string; delay: string }[]>([]);
 
@@ -112,6 +120,8 @@ function ExperienceBuilderContent() {
   const [title, setTitle] = useState(type === "apology" ? "I am so sorry..." : "Our Story");
   const [message, setMessage] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [youtubeStart, setYoutubeStart] = useState("");
+  const [youtubeEnd, setYoutubeEnd] = useState("");
   const [template, setTemplate] = useState("classic");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [messageImage, setMessageImage] = useState<string | null>(null);
@@ -130,6 +140,8 @@ function ExperienceBuilderContent() {
             setTitle(content.title || "");
             setMessage(content.message || "");
             setYoutubeUrl(content.youtubeUrl || "");
+            setYoutubeStart(content.youtubeStart || "");
+            setYoutubeEnd(content.youtubeEnd || "");
             setTemplate(data.template || "classic");
             setUploadedImage(content.uploadedImage || null);
             setMessageImage(content.messageImage || null);
@@ -152,7 +164,9 @@ function ExperienceBuilderContent() {
         sender, 
         title, 
         message, 
-        youtubeUrl, 
+        youtubeUrl,
+        youtubeStart,
+        youtubeEnd, 
         experienceType: type,
         uploadedImage,
         messageImage,
@@ -346,23 +360,67 @@ function ExperienceBuilderContent() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Background Music</label>
-                <input 
-                  type="text" 
-                  value={youtubeUrl}
-                  onChange={(e) => setYoutubeUrl(e.target.value)}
-                  placeholder="https://youtube.com/... or https://open.spotify.com/track/..."
-                  className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
-                />
-                <p className="text-[11px] text-black/40 font-medium">
-                  * <strong className="text-black/60">YouTube is highly recommended</strong> for full song playback. Spotify only allows 30-second previews.
-                </p>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Background Music</label>
+                  <input 
+                    type="text" 
+                    value={youtubeUrl}
+                    onChange={(e) => setYoutubeUrl(e.target.value)}
+                    placeholder="https://youtube.com/... or https://open.spotify.com/track/..."
+                    className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
+                  />
+                </div>
+                
+                {getYoutubeData(youtubeUrl) && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Start Time (sec)</label>
+                      <input 
+                        type="number" 
+                        value={youtubeStart}
+                        onChange={(e) => setYoutubeStart(e.target.value)}
+                        placeholder="e.g. 60"
+                        className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-black/40 uppercase tracking-widest">End Time (sec)</label>
+                      <input 
+                        type="number" 
+                        value={youtubeEnd}
+                        onChange={(e) => setYoutubeEnd(e.target.value)}
+                        placeholder="e.g. 90"
+                        className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
+                      />
+                    </div>
+                    
+                    <div className="col-span-2 mt-2">
+                       <label className="text-xs font-bold text-black/40 uppercase tracking-widest mb-2 block">Song Preview</label>
+                       <div className="rounded-lg overflow-hidden border border-black/10 shadow-sm">
+                         <iframe
+                            width="100%"
+                            height="120"
+                            src={`https://www.youtube.com/embed/${getYoutubeData(youtubeUrl)?.id}?start=${youtubeStart || ''}&end=${youtubeEnd || ''}`}
+                            allow="autoplay"
+                            className="w-full"
+                          />
+                       </div>
+                    </div>
+                  </div>
+                )}
+                
+                {!getYoutubeData(youtubeUrl) && (
+                  <p className="text-[11px] text-black/40 font-medium">
+                    * <strong className="text-black/60">YouTube is highly recommended</strong> for full song playback. Spotify only allows 30-second previews.
+                  </p>
+                )}
+                
                 {type === "durga-puja" && (
                   <div className="bg-[#8B0000]/5 p-3 rounded-lg border border-[#8B0000]/10 mt-2 space-y-1">
                     <p className="text-xs font-bold text-[#8B0000]">🎶 Ashtami Special Song Suggestions:</p>
-                    <p className="text-[11px] text-black/60 font-medium">For Male Friend: <span className="text-[#8B0000] cursor-pointer underline" onClick={() => setYoutubeUrl('https://www.youtube.com/watch?v=yD0dpeS1eak&t=90')}>Click to use (1:30)</span></p>
-                    <p className="text-[11px] text-black/60 font-medium">For Female Friend: <span className="text-[#8B0000] cursor-pointer underline" onClick={() => setYoutubeUrl('https://www.youtube.com/watch?v=yD0dpeS1eak&t=172')}>Click to use (2:52)</span></p>
+                    <p className="text-[11px] text-black/60 font-medium">For Male Friend: <span className="text-[#8B0000] cursor-pointer underline" onClick={() => { setYoutubeUrl('https://www.youtube.com/watch?v=yD0dpeS1eak'); setYoutubeStart('90'); setYoutubeEnd('120'); }}>Click to use (1:30)</span></p>
+                    <p className="text-[11px] text-black/60 font-medium">For Female Friend: <span className="text-[#8B0000] cursor-pointer underline" onClick={() => { setYoutubeUrl('https://www.youtube.com/watch?v=yD0dpeS1eak'); setYoutubeStart('172'); setYoutubeEnd('200'); }}>Click to use (2:52)</span></p>
                   </div>
                 )}
               </div>

@@ -44,17 +44,20 @@ function determineEmotion(text: string, type?: string): Emotion {
   return "romantic";
 }
 
-const getYoutubeData = (url: string) => {
+const getYoutubeData = (url: string, explicitStart?: string | number, explicitEnd?: string | number) => {
   if (!url) return null;
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|.*embed\/))([^&?]*)/);
   if (!match) return null;
   
   const id = match[1];
-  let start = 0;
+  let start = explicitStart ? parseInt(explicitStart.toString(), 10) : 0;
+  let end = explicitEnd ? parseInt(explicitEnd.toString(), 10) : 0;
+
+  // URL params override explicit fields for backward compatibility
   const tMatch = url.match(/[?&](?:t|start)=([^&]+)/);
   if (tMatch) {
     const timeStr = tMatch[1];
-    // Convert e.g. "1m30s" to 90 if needed, though usually YouTube gives seconds like t=90
+    start = 0;
     if (timeStr.includes('m') || timeStr.includes('s')) {
       const min = timeStr.match(/(\d+)m/);
       const sec = timeStr.match(/(\d+)s/);
@@ -65,7 +68,7 @@ const getYoutubeData = (url: string) => {
     }
   }
   
-  return { id, start };
+  return { id, start, end };
 };
 
 const getSpotifyData = (url: string) => {
@@ -157,7 +160,7 @@ export default function PublicExperienceClient({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isHighSpeed = useNetworkQuality();
 
-  const ytData = getYoutubeData(content.youtubeUrl);
+  const ytData = getYoutubeData(content.youtubeUrl, content.youtubeStart, content.youtubeEnd);
   const spotifyData = getSpotifyData(content.youtubeUrl);
 
   useEffect(() => {
@@ -254,7 +257,7 @@ export default function PublicExperienceClient({
 
       {ytData && isPlaying && (
         <iframe
-          src={`https://www.youtube.com/embed/${ytData.id}?autoplay=1&loop=1&playlist=${ytData.id}&controls=0&showinfo=0&autohide=1${ytData.start ? `&start=${ytData.start}` : ''}`}
+          src={`https://www.youtube.com/embed/${ytData.id}?autoplay=1&loop=1&playlist=${ytData.id}&controls=0&showinfo=0&autohide=1${ytData.start ? `&start=${ytData.start}` : ''}${ytData.end ? `&end=${ytData.end}` : ''}`}
           allow="autoplay"
           className="hidden"
         />
@@ -328,7 +331,7 @@ export default function PublicExperienceClient({
           For {content.recipient || "Someone Special"}
         </p>
         
-        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
+        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${content.experienceType === 'durga-puja' ? 'font-bengali italic' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
           {content.title || "A special message..."}
         </h1>
 
@@ -336,7 +339,7 @@ export default function PublicExperienceClient({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 3, delay: 1 }}
-          className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'} ${isCinematic ? 'text-white/80 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]' : 'text-black/80'}`}
+          className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${content.experienceType === 'durga-puja' ? 'font-bengali text-xl md:text-2xl' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'} ${isCinematic ? 'text-white/80 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]' : 'text-black/80'}`}
         >
           {content.message}
         </motion.div>
@@ -356,7 +359,7 @@ export default function PublicExperienceClient({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2, delay: 1 }}
-          className={`mt-24 text-2xl text-center ${emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-500' : 'font-display italic text-[#8B5E66]'}`}
+          className={`mt-24 text-2xl text-center ${content.experienceType === 'durga-puja' ? 'font-bengali text-[#8B0000]' : emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-500' : 'font-display italic text-[#8B5E66]'}`}
         >
           {content.experienceType === 'apology' ? 'I am so sorry,' :
            content.experienceType === 'anniversary' ? 'Forever yours,' :
