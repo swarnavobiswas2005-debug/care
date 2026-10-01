@@ -499,7 +499,7 @@ function ExperienceBuilderContent() {
           >
              {template === 'cinematic' && (
                <>
-                 <div className="absolute inset-0 pointer-events-none z-0 opacity-10 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
+                 <div className="absolute inset-0 pointer-events-none z-0 opacity-20 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000_100%)]" />
                </>
              )}
              
@@ -514,7 +514,7 @@ function ExperienceBuilderContent() {
                     {uploadedImage ? (
                       <img src={uploadedImage} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+                      <div className="w-full h-full bg-gradient-to-br from-[#EAE8E3] to-[#D5D2CC]" />
                     )}
                  </div>
                </div>

@@ -207,7 +207,7 @@ export default function PublicExperienceClient({
       >
         {isCinematic && (
           <>
-            <div className="fixed inset-0 pointer-events-none z-30 opacity-5 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
+            <div className="fixed inset-0 pointer-events-none z-30 opacity-20 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000_100%)]" />
           </>
         )}
         <FloatingElements emotion={emotion} type={content.experienceType} />
@@ -282,7 +282,7 @@ export default function PublicExperienceClient({
       
       {isCinematic && (
         <>
-          <div className="fixed inset-0 pointer-events-none z-30 opacity-5 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
+          <div className="fixed inset-0 pointer-events-none z-30 opacity-20 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000_100%)]" />
         </>
       )}
       
@@ -306,7 +306,7 @@ export default function PublicExperienceClient({
                <motion.div 
                  animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}
                  transition={isCinematic ? { duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" } : {}}
-                 className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" 
+                 className="w-full h-full bg-gradient-to-br from-[#EAE8E3] to-[#D5D2CC]" 
                />
              )}
           </div>
