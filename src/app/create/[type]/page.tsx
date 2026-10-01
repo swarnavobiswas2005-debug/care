@@ -9,7 +9,11 @@ import { CareAI } from "@/components/CareAI";
 
 type Emotion = "romantic" | "sad" | "joyful";
 
-function determineEmotion(text: string): Emotion {
+function determineEmotion(text: string, type?: string): Emotion {
+  if (type === "apology") return "sad";
+  if (type === "birthday") return "joyful";
+  if (type === "proposal" || type === "anniversary" || type === "love-letter") return "romantic";
+  
   if (!text) return "romantic";
   const t = text.toLowerCase();
   
@@ -24,7 +28,7 @@ function determineEmotion(text: string): Emotion {
   return "romantic";
 }
 
-const FloatingElements = ({ emotion }: { emotion: Emotion }) => {
+const FloatingElements = ({ emotion, type }: { emotion: Emotion, type?: string }) => {
   const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string; delay: string }[]>([]);
 
   useEffect(() => {
@@ -49,7 +53,7 @@ const FloatingElements = ({ emotion }: { emotion: Emotion }) => {
             className="absolute text-accent-rose text-xl"
             style={{ left: el.left }}
           >
-            ❤️
+            {type === 'proposal' ? '💍' : type === 'anniversary' ? '✨' : '❤️'}
           </motion.div>
         ))}
       </div>
@@ -137,7 +141,7 @@ function ExperienceBuilderContent() {
       type,
       template,
       status,
-      content: { recipient, sender, title, message, youtubeUrl }
+      content: { recipient, sender, title, message, youtubeUrl, experienceType: type }
     };
 
     try {
@@ -197,7 +201,7 @@ function ExperienceBuilderContent() {
     setSelectedText("");
   };
 
-  const emotion = determineEmotion(`${title} ${message}`);
+  const emotion = determineEmotion(`${title} ${message}`, type as string);
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 
   if (loading) return <div className="h-screen w-full flex items-center justify-center bg-gray-50">Loading...</div>;
@@ -373,7 +377,7 @@ function ExperienceBuilderContent() {
              {/* Mock Content based on state */}
              <div className="absolute inset-0 bg-gradient-to-b from-[#2B0810]/5 to-transparent h-64 pointer-events-none" />
              
-             <FloatingElements emotion={emotion} />
+             <FloatingElements emotion={emotion} type={type as string} />
 
              <div className="p-8 flex flex-col items-center text-center mt-12 relative z-10">
                <div className="w-24 h-24 rounded-full bg-gray-200 border-4 border-white shadow-lg mb-6 overflow-hidden">
@@ -396,7 +400,12 @@ function ExperienceBuilderContent() {
                </div>
 
                <div className={`mt-12 text-lg text-center ${emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-600' : 'font-display italic text-[#8B5E66]'}`}>
-                 {emotion === 'sad' ? 'Sincerely,' : emotion === 'joyful' ? 'Warmest wishes,' : 'With love,'} <br/> 
+                 {type === 'apology' ? 'I am so sorry,' :
+                  type === 'anniversary' ? 'Forever yours,' :
+                  type === 'proposal' ? 'Yours eternally,' :
+                  type === 'birthday' ? 'Warmest wishes,' :
+                  type === 'just-because' ? 'Thinking of you,' :
+                  'With love,'} <br/> 
                  <span className="text-xl mt-1 block">{sender || "Me"}</span>
                </div>
              </div>

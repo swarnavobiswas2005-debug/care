@@ -24,7 +24,11 @@ const EMOTION_CONFIG = {
   }
 };
 
-function determineEmotion(text: string): Emotion {
+function determineEmotion(text: string, type?: string): Emotion {
+  if (type === "apology") return "sad";
+  if (type === "birthday") return "joyful";
+  if (type === "proposal" || type === "anniversary" || type === "love-letter") return "romantic";
+
   if (!text) return "romantic";
   const t = text.toLowerCase();
   
@@ -52,7 +56,7 @@ const getSpotifyData = (url: string) => {
 };
 
 // Floating Elements Component
-const FloatingElements = ({ emotion }: { emotion: Emotion }) => {
+const FloatingElements = ({ emotion, type }: { emotion: Emotion, type?: string }) => {
   const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string; delay?: string }[]>([]);
 
   useEffect(() => {
@@ -77,7 +81,7 @@ const FloatingElements = ({ emotion }: { emotion: Emotion }) => {
             className="absolute text-accent-rose text-2xl"
             style={{ left: el.left }}
           >
-            ❤️
+            {type === 'proposal' ? '💍' : type === 'anniversary' ? '✨' : '❤️'}
           </motion.div>
         ))}
       </div>
@@ -135,7 +139,7 @@ export default function PublicExperienceClient({
   useEffect(() => {
     // Analyze emotion on mount
     const fullText = `${content.title || ""} ${content.message || ""}`;
-    setEmotion(determineEmotion(fullText));
+    setEmotion(determineEmotion(fullText, content.experienceType));
   }, [content]);
 
   useEffect(() => {
@@ -237,7 +241,7 @@ export default function PublicExperienceClient({
         </div>
       )}
 
-      <FloatingElements emotion={emotion} />
+      <FloatingElements emotion={emotion} type={content.experienceType} />
       
       {/* Audio Control */}
       <button 
@@ -285,7 +289,12 @@ export default function PublicExperienceClient({
           transition={{ duration: 2, delay: 1 }}
           className={`mt-24 text-2xl text-center ${emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-500' : 'font-display italic text-[#8B5E66]'}`}
         >
-          {emotion === 'sad' ? 'Sincerely,' : emotion === 'joyful' ? 'Warmest wishes,' : 'With love,'} <br/> 
+          {content.experienceType === 'apology' ? 'I am so sorry,' :
+           content.experienceType === 'anniversary' ? 'Forever yours,' :
+           content.experienceType === 'proposal' ? 'Yours eternally,' :
+           content.experienceType === 'birthday' ? 'Warmest wishes,' :
+           content.experienceType === 'just-because' ? 'Thinking of you,' :
+           'With love,'} <br/> 
           <span className="text-3xl mt-2 block">{content.sender || "Me"}</span>
         </motion.div>
       </motion.div>
