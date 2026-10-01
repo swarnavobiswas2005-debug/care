@@ -205,7 +205,14 @@ export default function PublicExperienceClient({
         className={`min-h-screen flex flex-col items-center justify-center relative overflow-hidden select-none ${isCinematic ? 'bg-[#110B0D] text-white' : 'bg-[#FDFBF7] text-[#110B0D]'}`}
         onContextMenu={(e) => e.preventDefault()}
       >
-        <FloatingElements emotion={emotion} />
+        {isCinematic && (
+          <>
+            <div className="fixed inset-0 pointer-events-none z-30 opacity-5 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
+            <motion.div initial={{ height: 0 }} animate={{ height: '10vh' }} transition={{ duration: 2, ease: "easeInOut" }} className="fixed top-0 left-0 w-full bg-black z-50 pointer-events-none shadow-[0_20px_40px_rgba(0,0,0,0.8)]" />
+            <motion.div initial={{ height: 0 }} animate={{ height: '10vh' }} transition={{ duration: 2, ease: "easeInOut" }} className="fixed bottom-0 left-0 w-full bg-black z-50 pointer-events-none shadow-[0_-20px_40px_rgba(0,0,0,0.8)]" />
+          </>
+        )}
+        <FloatingElements emotion={emotion} type={content.experienceType} />
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -275,17 +282,35 @@ export default function PublicExperienceClient({
 
       <div className={`absolute inset-0 bg-gradient-to-b ${config.bg} h-[60vh] pointer-events-none transition-all duration-1000`} />
       
+      {isCinematic && (
+        <>
+          <div className="fixed inset-0 pointer-events-none z-30 opacity-5 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
+          <motion.div initial={{ height: 0 }} animate={{ height: '10vh' }} transition={{ duration: 2, ease: "easeInOut" }} className="fixed top-0 left-0 w-full bg-black z-50 pointer-events-none shadow-[0_20px_40px_rgba(0,0,0,0.8)]" />
+          <motion.div initial={{ height: 0 }} animate={{ height: '10vh' }} transition={{ duration: 2, ease: "easeInOut" }} className="fixed bottom-0 left-0 w-full bg-black z-50 pointer-events-none shadow-[0_-20px_40px_rgba(0,0,0,0.8)]" />
+        </>
+      )}
+      
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
-        className="max-w-3xl mx-auto px-6 py-24 flex flex-col items-center text-center relative z-10"
+        className="max-w-3xl mx-auto px-6 py-24 flex flex-col items-center text-center relative z-20"
       >
-        <div className="w-40 h-40 rounded-full bg-gray-200 border-4 border-white shadow-2xl mb-12 overflow-hidden pointer-events-none">
+        <div className={`w-40 h-40 rounded-full bg-gray-200 border-4 border-white shadow-2xl mb-12 overflow-hidden pointer-events-none ${isCinematic ? 'ring-4 ring-white/10 ring-offset-8 ring-offset-[#110B0D]' : ''}`}>
            {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) ? (
-             <img src={content.uploadedImage} alt="Profile" className="w-full h-full object-cover" />
+             <motion.img 
+               animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}
+               transition={isCinematic ? { duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" } : {}}
+               src={content.uploadedImage} 
+               alt="Profile" 
+               className="w-full h-full object-cover" 
+             />
            ) : (
-             <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+             <motion.div 
+               animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}
+               transition={isCinematic ? { duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" } : {}}
+               className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" 
+             />
            )}
         </div>
         
@@ -293,15 +318,15 @@ export default function PublicExperienceClient({
           For {content.recipient || "Someone Special"}
         </p>
         
-        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'}`}>
+        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
           {content.title || "A special message..."}
         </h1>
 
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.5 }}
-          className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'} ${isCinematic ? 'text-white/80' : 'text-black/80'}`}
+          transition={{ duration: 3, delay: 1 }}
+          className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'} ${isCinematic ? 'text-white/80 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]' : 'text-black/80'}`}
         >
           {content.message}
         </motion.div>

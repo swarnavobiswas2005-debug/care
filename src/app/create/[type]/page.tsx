@@ -442,16 +442,23 @@ function ExperienceBuilderContent() {
               maxWidth: previewMode === 'desktop' ? 1024 : 390,
               borderRadius: previewMode === 'mobile' ? 40 : 16
             }}
-            className="h-fit min-h-[844px] bg-[#FDFBF7] shadow-2xl border-[8px] border-white relative overflow-hidden transform origin-top shrink-0"
+            className={`h-fit min-h-[844px] shadow-2xl border-[8px] border-white relative overflow-hidden transform origin-top shrink-0 transition-colors duration-1000 ${template === 'cinematic' ? 'bg-[#110B0D] text-white' : 'bg-[#FDFBF7] text-[#110B0D]'}`}
           >
+             {template === 'cinematic' && (
+               <>
+                 <div className="absolute inset-0 pointer-events-none z-0 opacity-10 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
+                 <div className="absolute top-0 left-0 w-full h-[10vh] bg-black z-30 pointer-events-none" />
+                 <div className="absolute bottom-0 left-0 w-full h-[10vh] bg-black z-30 pointer-events-none" />
+               </>
+             )}
              
              {/* Mock Content based on state */}
-             <div className="absolute inset-0 bg-gradient-to-b from-[#2B0810]/5 to-transparent h-64 pointer-events-none" />
+             <div className="absolute inset-0 bg-gradient-to-b from-[#2B0810]/5 to-transparent h-64 pointer-events-none z-0" />
              
              <FloatingElements emotion={emotion} type={type as string} />
 
              <div className="p-8 flex flex-col items-center text-center mt-12 relative z-10">
-               <div className="w-24 h-24 rounded-full bg-gray-200 border-4 border-white shadow-lg mb-6 overflow-hidden">
+               <div className={`w-24 h-24 rounded-full bg-gray-200 border-4 border-white shadow-lg mb-6 overflow-hidden ${template === 'cinematic' ? 'ring-2 ring-white/20' : ''}`}>
                   {uploadedImage ? (
                     <img src={uploadedImage} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
@@ -459,12 +466,12 @@ function ExperienceBuilderContent() {
                   )}
                </div>
                
-               <p className="font-display italic text-[#4A0E1B] text-xl mb-2">For {recipient || "Someone Special"}</p>
-               <h1 className={`text-4xl text-[#110B0D] leading-tight mb-8 ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'}`}>
+               <p className={`font-display italic text-xl mb-2 ${template === 'cinematic' ? 'text-white/60' : 'text-[#4A0E1B]'}`}>For {recipient || "Someone Special"}</p>
+               <h1 className={`text-4xl leading-tight mb-8 ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'} ${template === 'cinematic' ? 'text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]' : 'text-[#110B0D]'}`}>
                  {title || "A special message..."}
                </h1>
 
-               <div className={`w-full space-y-4 text-left whitespace-pre-wrap text-black/70 text-lg ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'}`}>
+               <div className={`w-full space-y-4 text-left whitespace-pre-wrap text-lg ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'} ${template === 'cinematic' ? 'text-white/80' : 'text-black/70'}`}>
                  {message || (
                    <>
                     <div className="h-4 bg-black/5 rounded w-3/4" />
