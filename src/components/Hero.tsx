@@ -47,17 +47,23 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 mt-4 w-full sm:w-auto"
+            className="flex flex-col sm:flex-row gap-10 sm:gap-6 mt-8 w-full sm:w-auto items-center sm:items-start"
           >
-            <Link
-              href={isLoggedIn ? "/dashboard" : "/login"}
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-primary-wine bg-primary-ivory rounded-full hover:scale-105 transition-transform shadow-lg shadow-primary-ivory/20"
-            >
-              Craft Yours <span className="ml-2">→</span>
-            </Link>
+            <div className="relative group mt-2">
+              <Link
+                href={isLoggedIn ? "/dashboard" : "/login"}
+                className="inline-flex items-center justify-center px-10 py-5 text-sm font-semibold text-primary-ivory bg-transparent border border-primary-ivory uppercase tracking-[0.2em] hover:bg-primary-ivory hover:text-primary-wine transition-colors"
+              >
+                WRITE MY LETTER
+              </Link>
+              <div className="absolute -bottom-6 right-0 text-2xl font-handwriting text-accent-blush -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-300">
+                for you...
+              </div>
+            </div>
+
             <Link
               href="#examples"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-primary-ivory border border-primary-ivory/30 rounded-full hover:bg-primary-ivory/10 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-5 text-sm font-medium text-primary-ivory/70 hover:text-primary-ivory transition-colors mt-2 sm:mt-2 uppercase tracking-widest"
             >
               See an Example
             </Link>
