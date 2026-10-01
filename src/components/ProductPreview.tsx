@@ -2,9 +2,12 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Play, Heart, CalendarHeart, Clock } from "lucide-react";
 
 export function ProductPreview() {
+  const router = useRouter();
+  
   return (
     <section id="examples" className="py-32 px-6 md:px-12 bg-primary-wine relative border-y border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
@@ -29,6 +32,7 @@ export function ProductPreview() {
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
+          onClick={() => router.push('/demo')}
           className="w-full max-w-5xl h-[600px] relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group cursor-pointer bg-primary-ivory flex flex-col items-center"
         >
           {/* Scrollable internal mock page */}
