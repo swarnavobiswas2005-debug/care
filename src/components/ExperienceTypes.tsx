@@ -43,7 +43,7 @@ const experiences = [
     description: "For your permanent Ashtami partner.",
     cta: "Craft Ashtami Letter",
     color: "from-[#8B0000] to-primary-wine",
-    image: "https://images.unsplash.com/photo-1605333555547-8a4db95c5dbb?q=40&w=600&auto=format&fit=crop", // Festive
+    image: "/durga-puja-couple.jpg",
   }
 ];
 

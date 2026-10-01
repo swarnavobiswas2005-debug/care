@@ -18,7 +18,7 @@ export default function DurgaPujaExperiencePage() {
         <div className="absolute inset-0 z-0">
            <div 
              className="absolute inset-0 bg-cover bg-center opacity-[0.15] mix-blend-multiply filter sepia-[0.3]"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1605333555547-8a4db95c5dbb?q=40&w=1000&auto=format&fit=crop')" }}
+             style={{ backgroundImage: "url('/durga-puja-couple.jpg')" }}
            />
            <div className="absolute inset-0 bg-gradient-to-t from-[#FDFBF7] via-[#FDFBF7]/80 to-transparent" />
         </div>
