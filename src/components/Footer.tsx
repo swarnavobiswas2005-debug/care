@@ -1,7 +1,24 @@
+"use client";
+
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+
+const coupleJokes = [
+  "Marriage is basically just whispering 'Are you awake? I need to show you this cat video.'",
+  "My wife and I laugh at how competitive we are. But I laugh louder.",
+  "A good marriage is at least 80% shouting 'What?' from other rooms.",
+  "I asked my husband if I was the only one he's ever been with. He said yes, all the others were nines and tens.",
+  "I love you more than coffee, but please don't make me prove it."
+];
 
 export function Footer() {
+  const [joke, setJoke] = useState("");
+
+  useEffect(() => {
+    setJoke(coupleJokes[Math.floor(Math.random() * coupleJokes.length)]);
+  }, []);
+
   return (
     <footer className="bg-primary-wine pt-24 pb-12 border-t border-white/10 px-6 md:px-12 relative z-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-24">
@@ -24,10 +41,11 @@ export function Footer() {
           <Link href="/faq" className="text-primary-ivory/60 hover:text-primary-ivory text-sm font-sans transition-colors">FAQ</Link>
         </div>
 
-        <div className="md:col-span-2 flex flex-col gap-4">
-          <h5 className="text-primary-ivory font-display text-lg tracking-wide mb-2">Account</h5>
-          <Link href="/login" className="text-primary-ivory/60 hover:text-primary-ivory text-sm font-sans transition-colors">Log In</Link>
-          <Link href="/signup" className="text-primary-ivory/60 hover:text-primary-ivory text-sm font-sans transition-colors">Create Account</Link>
+        <div className="md:col-span-2 flex flex-col gap-2">
+          <h5 className="text-primary-ivory font-display text-lg tracking-wide mb-2">Daily Chuckle</h5>
+          <p className="text-primary-ivory/60 text-sm font-sans italic leading-relaxed">
+            {joke || "Loading romance..."}
+          </p>
         </div>
 
         <div className="md:col-span-3 flex flex-col gap-4">
