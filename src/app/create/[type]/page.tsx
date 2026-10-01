@@ -282,7 +282,7 @@ function ExperienceBuilderContent() {
                 <p className="text-[11px] text-black/40 font-medium">
                   * <strong className="text-black/60">YouTube is highly recommended</strong> for full song playback. Spotify only allows 30-second previews.
                 </p>
-                {resolvedParams.type === "durga-puja" && (
+                {type === "durga-puja" && (
                   <div className="bg-[#8B0000]/5 p-3 rounded-lg border border-[#8B0000]/10 mt-2 space-y-1">
                     <p className="text-xs font-bold text-[#8B0000]">🎶 Ashtami Special Song Suggestions:</p>
                     <p className="text-[11px] text-black/60 font-medium">For Male Friend: <span className="text-[#8B0000] cursor-pointer underline" onClick={() => setYoutubeUrl('https://www.youtube.com/watch?v=yD0dpeS1eak&t=90')}>Click to use (1:30)</span></p>
