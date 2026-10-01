@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import { Volume2, VolumeX, Play } from "lucide-react";
+import Link from "next/link";
 
 type Emotion = "romantic" | "sad" | "joyful";
 
@@ -366,6 +367,34 @@ export default function PublicExperienceClient({
            'With love,'} <br/> 
           <span className="text-3xl mt-2 block">{content.sender || "Me"}</span>
         </motion.div>
+
+        {/* Viral Growth Loop CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 3 }}
+          className={`mt-32 pt-16 border-t ${isCinematic ? 'border-white/10' : 'border-black/10'} w-full max-w-xl mx-auto flex flex-col items-center text-center`}
+        >
+          <p className={`text-sm tracking-[0.3em] uppercase mb-6 font-medium ${isCinematic ? 'text-white/40' : 'text-black/40'}`}>
+            Make them smile too
+          </p>
+          <div className="relative inline-block group">
+            <Link
+              href="/"
+              className={`inline-flex items-center justify-center px-8 py-4 text-xs md:text-sm font-semibold uppercase tracking-[0.2em] transition-colors border ${
+                isCinematic 
+                  ? 'bg-transparent border-white text-white hover:bg-white hover:text-black' 
+                  : 'bg-transparent border-[#4A0E1B] text-[#4A0E1B] hover:bg-[#4A0E1B] hover:text-[#FDFBF7]'
+              }`}
+            >
+              CRAFT FOR YOUR PARTNER ALSO
+            </Link>
+            <div className={`absolute -bottom-6 right-0 text-xl md:text-2xl font-handwriting -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-300 ${isCinematic ? 'text-white/70' : 'text-[#8B5E66]'}`}>
+              it's free...
+            </div>
+          </div>
+        </motion.div>
+
       </motion.div>
     </main>
   );
