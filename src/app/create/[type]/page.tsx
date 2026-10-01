@@ -447,8 +447,6 @@ function ExperienceBuilderContent() {
              {template === 'cinematic' && (
                <>
                  <div className="absolute inset-0 pointer-events-none z-0 opacity-10 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
-                 <div className="absolute top-0 left-0 w-full h-[10vh] bg-black z-30 pointer-events-none" />
-                 <div className="absolute bottom-0 left-0 w-full h-[10vh] bg-black z-30 pointer-events-none" />
                </>
              )}
              
@@ -458,7 +456,7 @@ function ExperienceBuilderContent() {
              <FloatingElements emotion={emotion} type={type as string} />
 
              <div className="p-8 flex flex-col items-center text-center mt-12 relative z-10">
-               <div className="w-24 h-24 rounded-full bg-gray-200 border-4 border-white shadow-lg mb-6 overflow-hidden">
+               <div className="w-24 h-24 rounded-full bg-gray-200 ring-4 ring-white shadow-lg mb-6 overflow-hidden">
                   {uploadedImage ? (
                     <img src={uploadedImage} alt="Profile" className="w-full h-full object-cover" />
                   ) : (

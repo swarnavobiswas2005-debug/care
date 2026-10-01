@@ -208,8 +208,6 @@ export default function PublicExperienceClient({
         {isCinematic && (
           <>
             <div className="fixed inset-0 pointer-events-none z-30 opacity-5 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
-            <motion.div initial={{ height: 0 }} animate={{ height: '10vh' }} transition={{ duration: 2, ease: "easeInOut" }} className="fixed top-0 left-0 w-full bg-black z-50 pointer-events-none shadow-[0_20px_40px_rgba(0,0,0,0.8)]" />
-            <motion.div initial={{ height: 0 }} animate={{ height: '10vh' }} transition={{ duration: 2, ease: "easeInOut" }} className="fixed bottom-0 left-0 w-full bg-black z-50 pointer-events-none shadow-[0_-20px_40px_rgba(0,0,0,0.8)]" />
           </>
         )}
         <FloatingElements emotion={emotion} type={content.experienceType} />
@@ -285,8 +283,6 @@ export default function PublicExperienceClient({
       {isCinematic && (
         <>
           <div className="fixed inset-0 pointer-events-none z-30 opacity-5 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
-          <motion.div initial={{ height: 0 }} animate={{ height: '10vh' }} transition={{ duration: 2, ease: "easeInOut" }} className="fixed top-0 left-0 w-full bg-black z-50 pointer-events-none shadow-[0_20px_40px_rgba(0,0,0,0.8)]" />
-          <motion.div initial={{ height: 0 }} animate={{ height: '10vh' }} transition={{ duration: 2, ease: "easeInOut" }} className="fixed bottom-0 left-0 w-full bg-black z-50 pointer-events-none shadow-[0_-20px_40px_rgba(0,0,0,0.8)]" />
         </>
       )}
       
@@ -296,7 +292,7 @@ export default function PublicExperienceClient({
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="max-w-3xl mx-auto px-6 py-24 flex flex-col items-center text-center relative z-20"
       >
-        <div className="w-40 h-40 rounded-full bg-gray-200 border-4 border-white shadow-2xl mb-12 overflow-hidden pointer-events-none">
+        <div className="w-40 h-40 rounded-full bg-gray-200 ring-4 ring-white shadow-2xl mb-12 overflow-hidden pointer-events-none">
            {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) ? (
              <motion.img 
                animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}
