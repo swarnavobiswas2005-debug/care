@@ -201,6 +201,12 @@ export default function PublicExperienceClient({
     }
   };
 
+  const containsBengali = (text: string) => /[\u0980-\u09FF]/.test(text || '');
+  const titleFont = containsBengali(content.title || "") || content.experienceType === 'durga-puja' ? 'font-bengali' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display';
+  const messageFont = containsBengali(content.message || "") || content.experienceType === 'durga-puja' ? 'font-bengali text-xl md:text-2xl' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif';
+  const senderFont = containsBengali(content.sender || "") || content.experienceType === 'durga-puja' ? 'font-bengali text-[#8B0000]' : emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-500' : 'font-display italic text-[#8B5E66]';
+  const recipientFont = containsBengali(content.recipient || "") || content.experienceType === 'durga-puja' ? 'font-bengali text-[#8B5E66]' : '';
+
   const config = EMOTION_CONFIG[emotion];
   const isCinematic = template === 'cinematic';
   const isDark = isCinematic || emotion === 'sad';
@@ -327,11 +333,11 @@ export default function PublicExperienceClient({
           </div>
         </div>
         
-        <p className={`font-display italic text-2xl mb-6 transition-colors duration-1000 ${config.textHighlight}`}>
+        <p className={`${recipientFont ? recipientFont : `font-display italic text-2xl mb-6 transition-colors duration-1000 ${config.textHighlight}`}`}>
           For {content.recipient || "Someone Special"}
         </p>
         
-        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${content.experienceType === 'durga-puja' ? 'font-bengali' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
+        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${titleFont} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
           {content.title || "A special message..."}
         </h1>
 
@@ -339,7 +345,7 @@ export default function PublicExperienceClient({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 3, delay: 1 }}
-          className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${content.experienceType === 'durga-puja' ? 'font-bengali text-xl md:text-2xl' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'} ${isCinematic ? 'text-white/80 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]' : 'text-black/80'}`}
+          className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${messageFont} ${isCinematic ? 'text-white/80 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]' : 'text-black/80'}`}
         >
           {content.message}
         </motion.div>
@@ -359,7 +365,7 @@ export default function PublicExperienceClient({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2, delay: 1 }}
-          className={`mt-24 text-2xl text-center ${content.experienceType === 'durga-puja' ? 'font-bengali text-[#8B0000]' : emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-500' : 'font-display italic text-[#8B5E66]'}`}
+          className={`mt-24 text-2xl text-center ${senderFont}`}
         >
           {content.experienceType === 'apology' ? 'I am so sorry,' :
            content.experienceType === 'anniversary' ? 'Forever yours,' :
