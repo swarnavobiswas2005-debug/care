@@ -78,15 +78,16 @@ const getSpotifyData = (url: string) => {
 };
 
 // Floating Elements Component
-const FloatingElements = ({ emotion, type }: { emotion: Emotion, type?: string }) => {
-  const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string; delay?: string }[]>([]);
+const FloatingElements = ({ emotion, type, isCinematic }: { emotion: Emotion, type?: string, isCinematic?: boolean }) => {
+  const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string; delay?: string; size?: number }[]>([]);
 
   useEffect(() => {
-    const newElements = Array.from({ length: 20 }).map((_, i) => ({
+    const newElements = Array.from({ length: 30 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
-      animationDuration: `${Math.random() * 5 + 5}s`,
-      delay: `${Math.random() * 5}s`
+      animationDuration: `${Math.random() * 8 + 6}s`,
+      delay: `${Math.random() * 5}s`,
+      size: Math.random() * 6 + 2
     }));
     setElements(newElements);
   }, [emotion]);
@@ -97,14 +98,17 @@ const FloatingElements = ({ emotion, type }: { emotion: Emotion, type?: string }
         {elements.map(el => (
           <motion.div
             key={el.id}
-            initial={{ y: "110vh", opacity: 0 }}
-            animate={{ y: "-10vh", opacity: [0, 0.8, 0] }}
+            initial={{ y: "110vh", opacity: 0, scale: 0.5 }}
+            animate={{ y: "-10vh", opacity: [0, Math.random() * 0.5 + 0.3, 0], x: [0, Math.random() * 40 - 20, 0] }}
             transition={{ duration: parseFloat(el.animationDuration), repeat: Infinity, delay: parseFloat(el.delay as string) }}
-            className="absolute text-accent-rose text-2xl"
-            style={{ left: el.left }}
-          >
-            {type === 'proposal' ? '💍' : type === 'anniversary' ? '✨' : '❤️'}
-          </motion.div>
+            className={`absolute rounded-full blur-[1px] ${isCinematic ? 'bg-white' : 'bg-rose-400'}`}
+            style={{ 
+              left: el.left,
+              width: `${el.size}px`,
+              height: `${el.size}px`,
+              boxShadow: isCinematic ? '0 0 10px rgba(255,255,255,0.8)' : '0 0 10px rgba(251,113,133,0.8)'
+            }}
+          />
         ))}
       </div>
     );
@@ -117,9 +121,9 @@ const FloatingElements = ({ emotion, type }: { emotion: Emotion, type?: string }
           <motion.div
             key={el.id}
             initial={{ y: "-10vh", opacity: 0 }}
-            animate={{ y: "110vh", opacity: [0, 0.5, 0] }}
-            transition={{ duration: parseFloat(el.animationDuration) * 0.5, repeat: Infinity, delay: parseFloat(el.delay as string) }}
-            className="absolute w-[1px] h-12 bg-blue-400/30"
+            animate={{ y: "110vh", opacity: [0, 0.4, 0] }}
+            transition={{ duration: parseFloat(el.animationDuration) * 0.6, repeat: Infinity, delay: parseFloat(el.delay as string) }}
+            className={`absolute w-[1px] h-16 ${isCinematic ? 'bg-white/20' : 'bg-blue-400/30'}`}
             style={{ left: el.left }}
           />
         ))}
@@ -132,14 +136,17 @@ const FloatingElements = ({ emotion, type }: { emotion: Emotion, type?: string }
       {elements.map(el => (
         <motion.div
           key={el.id}
-          initial={{ y: "-10vh", opacity: 0, rotate: 0 }}
-          animate={{ y: "110vh", opacity: [0, 1, 0], rotate: 360 }}
+          initial={{ y: "-10vh", opacity: 0 }}
+          animate={{ y: "110vh", opacity: [0, 0.6, 0], x: [0, Math.random() * 60 - 30, 0] }}
           transition={{ duration: parseFloat(el.animationDuration), repeat: Infinity, delay: parseFloat(el.delay as string) }}
-          className={type === 'durga-puja' ? "absolute text-2xl" : "absolute w-3 h-3 rounded-full"}
-          style={type === 'durga-puja' ? { left: el.left } : { left: el.left, backgroundColor: ['#FCD34D', '#F87171', '#60A5FA', '#34D399'][el.id % 4] }}
-        >
-          {type === 'durga-puja' && (el.id % 2 === 0 ? '🌸' : '🪔')}
-        </motion.div>
+          className={`absolute rounded-full blur-[1px] ${isCinematic ? 'bg-amber-100' : 'bg-amber-400'}`}
+          style={{ 
+            left: el.left,
+            width: `${el.size}px`,
+            height: `${el.size}px`,
+            boxShadow: isCinematic ? '0 0 12px rgba(254,243,199,0.5)' : '0 0 12px rgba(251,191,36,0.5)'
+          }}
+        />
       ))}
     </div>
   );
@@ -227,21 +234,38 @@ export default function PublicExperienceClient({
             )}
           </>
         )}
-        <FloatingElements emotion={emotion} type={content.experienceType} />
+        <FloatingElements emotion={emotion} type={content.experienceType} isCinematic={isCinematic} />
         <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center relative z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="text-center relative z-10 flex flex-col items-center"
         >
-          <div className="font-display italic text-2xl mb-8 opacity-70">A message for {content.recipient || "you"}</div>
-          <button 
-            onClick={startExperience}
-            className={`px-10 py-5 rounded-full text-lg font-medium shadow-xl flex items-center gap-3 mx-auto transition-transform hover:scale-105 ${
-              isCinematic ? 'bg-white text-black' : 'bg-primary-wine text-white'
-            }`}
-          >
-            <Play size={20} /> Open Experience
-          </button>
+          <div className={`text-sm tracking-[0.3em] uppercase mb-6 font-medium ${isCinematic ? 'text-white/40' : 'text-black/40'}`}>
+            For {content.recipient || "you"}
+          </div>
+          <div className={`font-display italic text-5xl md:text-7xl mb-12 ${isCinematic ? 'text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]' : 'text-[#4A0E1B]'}`}>
+            A special message
+          </div>
+          <div className="relative inline-block group">
+            <button 
+              onClick={startExperience}
+              className={`inline-flex items-center justify-center px-12 py-5 text-sm font-semibold uppercase tracking-[0.2em] transition-all duration-500 border ${
+                isCinematic 
+                  ? 'bg-transparent border-white text-white hover:bg-white hover:text-black hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]' 
+                  : 'bg-transparent border-[#4A0E1B] text-[#4A0E1B] hover:bg-[#4A0E1B] hover:text-[#FDFBF7] hover:shadow-[0_0_30px_rgba(74,14,27,0.2)]'
+              }`}
+            >
+              <span className="mr-3 relative flex h-3 w-3">
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isCinematic ? 'bg-white' : 'bg-[#4A0E1B]'}`}></span>
+                <span className={`relative inline-flex rounded-full h-3 w-3 ${isCinematic ? 'bg-white' : 'bg-[#4A0E1B] group-hover:bg-[#FDFBF7]'}`}></span>
+              </span>
+              TAP TO OPEN
+            </button>
+            <div className={`absolute -bottom-8 right-0 text-2xl font-handwriting -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-500 ${isCinematic ? 'text-white/70' : 'text-[#8B5E66]'}`}>
+              turn on sound...
+            </div>
+          </div>
         </motion.div>
       </main>
     );
@@ -283,7 +307,7 @@ export default function PublicExperienceClient({
         </div>
       )}
 
-      <FloatingElements emotion={emotion} type={content.experienceType} />
+      <FloatingElements emotion={emotion} type={content.experienceType} isCinematic={isCinematic} />
       
       {/* Audio Control */}
       <button 
