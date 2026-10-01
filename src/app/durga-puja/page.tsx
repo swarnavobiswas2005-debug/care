@@ -32,7 +32,7 @@ export default function DurgaPujaExperiencePage() {
             <span className="text-[#8B0000] text-sm tracking-[0.3em] uppercase mb-8 block font-medium">
               Limited Edition — Durga Puja
             </span>
-            <h1 className="text-5xl md:text-7xl font-display leading-[1] text-[#8B0000] mb-8 italic">
+            <h1 className="text-5xl md:text-7xl font-bengali leading-[1] text-[#8B0000] mb-8">
               শুভ শারদীয়া
             </h1>
             <p className="text-xl text-[#8B0000]/70 font-sans max-w-xl mx-auto mb-12">

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Manrope:wght@400;500;600&family=Playfair+Display:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@400;500;600&family=Tiro+Bangla:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Manrope:wght@400;500;600&family=Playfair+Display:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@400;500;600&family=Galada&display=swap');
 @import "tailwindcss";
 @theme inline {
   --color-primary-burgundy: #4A0E1B;
@@ -18,7 +18,7 @@
   --font-cormorant: "Cormorant Garamond", serif;
   --font-quicksand: "Quicksand", sans-serif;
   --font-handwriting: "Caveat", cursive;
-  --font-bengali: "Tiro Bangla", serif;
+  --font-bengali: "Galada", cursive, serif;
 }
 
 :root {

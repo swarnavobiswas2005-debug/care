@@ -331,7 +331,7 @@ export default function PublicExperienceClient({
           For {content.recipient || "Someone Special"}
         </p>
         
-        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${content.experienceType === 'durga-puja' ? 'font-bengali italic' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
+        <h1 className={`text-5xl md:text-7xl leading-tight mb-16 max-w-4xl ${content.experienceType === 'durga-puja' ? 'font-bengali' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'} ${isCinematic ? 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
           {content.title || "A special message..."}
         </h1>
 
