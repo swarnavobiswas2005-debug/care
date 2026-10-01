@@ -414,6 +414,7 @@ function ExperienceBuilderContent() {
                   type === 'anniversary' ? 'Forever yours,' :
                   type === 'proposal' ? 'Yours eternally,' :
                   type === 'birthday' ? 'Warmest wishes,' :
+                  type === 'durga-puja' ? 'পার্মানেন্ট অষ্টমীতে তোমার হাত ধরার পার্টনার' :
                   type === 'just-because' ? 'Thinking of you,' :
                   'With love,'} <br/> 
                  <span className="text-xl mt-1 block">{sender || "Me"}</span>
