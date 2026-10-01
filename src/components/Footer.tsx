@@ -51,8 +51,8 @@ export function Footer() {
         <div className="md:col-span-3 flex flex-col gap-4">
           <h5 className="text-primary-ivory font-display text-lg tracking-wide mb-2">Legal</h5>
           <Link href="/privacy" className="text-primary-ivory/60 hover:text-primary-ivory text-sm font-sans transition-colors">Privacy Policy</Link>
-          <Link href="/terms" className="text-primary-ivory/60 hover:text-primary-ivory text-sm font-sans transition-colors">Terms of Service</Link>
-          <Link href="/cookie" className="text-primary-ivory/60 hover:text-primary-ivory text-sm font-sans transition-colors">Cookie Policy</Link>
+          <Link href="/privacy" className="text-primary-ivory/60 hover:text-primary-ivory text-sm font-sans transition-colors">Terms of Service</Link>
+          <Link href="/privacy" className="text-primary-ivory/60 hover:text-primary-ivory text-sm font-sans transition-colors">Cookie Policy</Link>
         </div>
 
       </div>
