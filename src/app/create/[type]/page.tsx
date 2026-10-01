@@ -271,7 +271,7 @@ function ExperienceBuilderContent() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Background Music (YouTube or Spotify URL)</label>
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Background Music</label>
                 <input 
                   type="text" 
                   value={youtubeUrl}
@@ -279,6 +279,9 @@ function ExperienceBuilderContent() {
                   placeholder="https://youtube.com/... or https://open.spotify.com/track/..."
                   className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
                 />
+                <p className="text-[11px] text-black/40 font-medium">
+                  * <strong className="text-black/60">YouTube is highly recommended</strong> for full song playback. Spotify only allows 30-second previews.
+                </p>
               </div>
 
               <div className="space-y-2">
