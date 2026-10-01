@@ -43,10 +43,28 @@ function determineEmotion(text: string, type?: string): Emotion {
   return "romantic";
 }
 
-const getYoutubeId = (url: string) => {
+const getYoutubeData = (url: string) => {
   if (!url) return null;
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|.*embed\/))([^&?]*)/);
-  return match ? match[1] : null;
+  if (!match) return null;
+  
+  const id = match[1];
+  let start = 0;
+  const tMatch = url.match(/[?&](?:t|start)=([^&]+)/);
+  if (tMatch) {
+    const timeStr = tMatch[1];
+    // Convert e.g. "1m30s" to 90 if needed, though usually YouTube gives seconds like t=90
+    if (timeStr.includes('m') || timeStr.includes('s')) {
+      const min = timeStr.match(/(\d+)m/);
+      const sec = timeStr.match(/(\d+)s/);
+      if (min) start += parseInt(min[1]) * 60;
+      if (sec) start += parseInt(sec[1]);
+    } else {
+      start = parseInt(timeStr, 10);
+    }
+  }
+  
+  return { id, start };
 };
 
 const getSpotifyData = (url: string) => {
@@ -135,7 +153,7 @@ export default function PublicExperienceClient({
   const [hasStarted, setHasStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const ytId = getYoutubeId(content.youtubeUrl);
+  const ytData = getYoutubeData(content.youtubeUrl);
   const spotifyData = getSpotifyData(content.youtubeUrl);
 
   useEffect(() => {
@@ -213,7 +231,7 @@ export default function PublicExperienceClient({
       onContextMenu={(e) => e.preventDefault()}
     >
       
-      {!ytId && !spotifyData && (
+      {!ytData && !spotifyData && (
         <audio 
           ref={audioRef}
           src={config.audioUrl}
@@ -221,9 +239,9 @@ export default function PublicExperienceClient({
         />
       )}
 
-      {ytId && isPlaying && (
+      {ytData && isPlaying && (
         <iframe
-          src={`https://www.youtube.com/embed/${ytId}?autoplay=1&loop=1&playlist=${ytId}&controls=0&showinfo=0&autohide=1`}
+          src={`https://www.youtube.com/embed/${ytData.id}?autoplay=1&loop=1&playlist=${ytData.id}&controls=0&showinfo=0&autohide=1${ytData.start ? `&start=${ytData.start}` : ''}`}
           allow="autoplay"
           className="hidden"
         />
