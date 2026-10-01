@@ -1,0 +1,482 @@
+"use client";
+
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense, useRef } from "react";
+import Link from "next/link";
+import { ArrowLeft, Save, Play, Settings, Image as ImageIcon, Type, Layout, Share } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CareAI } from "@/components/CareAI";
+
+type Emotion = "romantic" | "sad" | "joyful";
+
+function determineEmotion(text: string): Emotion {
+  if (!text) return "romantic";
+  const t = text.toLowerCase();
+  
+  const sadWords = ["sorry", "forgive", "regret", "hurt", "mistake", "wrong", "sad", "apologize", "pain"];
+  const joyfulWords = ["happy", "birthday", "celebrate", "party", "joy", "laugh", "amazing", "cheers", "fun", "congrats"];
+  
+  let sadScore = sadWords.filter(w => t.includes(w)).length;
+  let joyScore = joyfulWords.filter(w => t.includes(w)).length;
+  
+  if (sadScore > joyScore && sadScore > 0) return "sad";
+  if (joyScore > sadScore && joyScore > 0) return "joyful";
+  return "romantic";
+}
+
+const FloatingElements = ({ emotion }: { emotion: Emotion }) => {
+  const [elements, setElements] = useState<{ id: number; left: string; animationDuration: string; delay: string }[]>([]);
+
+  useEffect(() => {
+    const newElements = Array.from({ length: 15 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      animationDuration: `${Math.random() * 5 + 5}s`,
+      delay: `${Math.random() * 5}s`
+    }));
+    setElements(newElements);
+  }, [emotion]);
+
+  if (emotion === 'romantic') {
+    return (
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        {elements.map(el => (
+          <motion.div
+            key={el.id}
+            initial={{ y: "800px", opacity: 0 }}
+            animate={{ y: "-100px", opacity: [0, 0.6, 0] }}
+            transition={{ duration: parseFloat(el.animationDuration), repeat: Infinity, delay: parseFloat(el.delay) }}
+            className="absolute text-accent-rose text-xl"
+            style={{ left: el.left }}
+          >
+            ❤️
+          </motion.div>
+        ))}
+      </div>
+    );
+  }
+
+  if (emotion === 'sad') {
+    return (
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        {elements.map(el => (
+          <motion.div
+            key={el.id}
+            initial={{ y: "-100px", opacity: 0 }}
+            animate={{ y: "800px", opacity: [0, 0.4, 0] }}
+            transition={{ duration: parseFloat(el.animationDuration) * 0.5, repeat: Infinity, delay: parseFloat(el.delay) }}
+            className="absolute w-[1px] h-10 bg-blue-400/30"
+            style={{ left: el.left }}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {elements.map(el => (
+        <motion.div
+          key={el.id}
+          initial={{ y: "-100px", opacity: 0, rotate: 0 }}
+          animate={{ y: "800px", opacity: [0, 0.8, 0], rotate: 360 }}
+          transition={{ duration: parseFloat(el.animationDuration), repeat: Infinity, delay: parseFloat(el.delay) }}
+          className="absolute w-2.5 h-2.5 rounded-full"
+          style={{ left: el.left, backgroundColor: ['#FCD34D', '#F87171', '#60A5FA', '#34D399'][el.id % 4] }}
+        />
+      ))}
+    </div>
+  );
+};
+
+function ExperienceBuilderContent() {
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const type = params.type as string;
+  const id = searchParams.get("id");
+
+  const [activeTab, setActiveTab] = useState("content");
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [previewMode, setPreviewMode] = useState<"mobile" | "desktop">("mobile");
+
+  // States
+  const [recipient, setRecipient] = useState("");
+  const [sender, setSender] = useState("");
+  const [title, setTitle] = useState(type === "apology" ? "I am so sorry..." : "Our Story");
+  const [message, setMessage] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [template, setTemplate] = useState("classic");
+
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      fetch(`/api/experiences/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && !data.error) {
+            const content = JSON.parse(data.content || "{}");
+            setRecipient(content.recipient || "");
+            setSender(content.sender || "");
+            setTitle(content.title || "");
+            setMessage(content.message || "");
+            setYoutubeUrl(content.youtubeUrl || "");
+            setTemplate(data.template || "classic");
+          }
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [id]);
+
+  const [publishedSlug, setPublishedSlug] = useState<string | null>(null);
+
+  const handleSave = async (status: 'draft' | 'published') => {
+    setSaving(true);
+    const payload = {
+      type,
+      template,
+      status,
+      content: { recipient, sender, title, message, youtubeUrl }
+    };
+
+    try {
+      if (id) {
+        const res = await fetch(`/api/experiences/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (status === 'published') setPublishedSlug(data.slug);
+      } else {
+        const res = await fetch("/api/experiences", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.id) {
+          if (status === 'published') {
+            setPublishedSlug(data.slug);
+          } else {
+            router.push(`/create/${type}?id=${data.id}`);
+          }
+        }
+      }
+    } catch (e) {} finally {
+      setSaving(false);
+    }
+  };
+
+  // Selection tracking
+  const [selectedText, setSelectedText] = useState("");
+  const textRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleSelect = () => {
+    if (!textRef.current) return;
+    const start = textRef.current.selectionStart;
+    const end = textRef.current.selectionEnd;
+    setSelectedText(message.substring(start, end));
+  };
+
+  const handleInsert = (text: string) => {
+    if (!textRef.current) return;
+    const start = textRef.current.selectionStart;
+    const end = textRef.current.selectionEnd;
+    const newMsg = message.substring(0, start) + "\n\n" + text + "\n\n" + message.substring(end);
+    setMessage(newMsg);
+  };
+
+  const handleReplace = (text: string) => {
+    if (!textRef.current) return;
+    const start = textRef.current.selectionStart;
+    const end = textRef.current.selectionEnd;
+    const newMsg = message.substring(0, start) + text + message.substring(end);
+    setMessage(newMsg);
+    setSelectedText("");
+  };
+
+  const emotion = determineEmotion(`${title} ${message}`);
+  const [showMobilePreview, setShowMobilePreview] = useState(false);
+
+  if (loading) return <div className="h-screen w-full flex items-center justify-center bg-gray-50">Loading...</div>;
+
+  return (
+    <main className="h-screen w-full flex flex-col md:flex-row overflow-hidden bg-gray-50 text-black">
+      
+      {/* Sidebar Editor */}
+      <aside className={`w-full md:w-80 bg-white border-r border-black/10 h-full shrink-0 z-20 shadow-xl ${showMobilePreview ? 'hidden md:flex' : 'flex'} flex-col`}>
+        <div className="h-16 flex items-center px-4 border-b border-black/5 justify-between shrink-0 bg-primary-wine text-white">
+          <button onClick={() => router.back()} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+            <ArrowLeft size={18} />
+          </button>
+          <span className="font-display font-medium text-sm capitalize tracking-wider">{type} Builder</span>
+          <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title="Settings">
+            <Settings size={18} />
+          </button>
+        </div>
+
+        <div className="flex border-b border-black/5 shrink-0 bg-[#Fdfbf7]">
+          <button 
+            className={`flex-1 py-3 text-xs font-medium uppercase tracking-wider ${activeTab === 'content' ? 'text-primary-wine border-b-2 border-primary-wine' : 'text-black/40 hover:text-black/60'}`}
+            onClick={() => setActiveTab("content")}
+          >
+            Content
+          </button>
+          <button 
+            className={`flex-1 py-3 text-xs font-medium uppercase tracking-wider ${activeTab === 'design' ? 'text-primary-wine border-b-2 border-primary-wine' : 'text-black/40 hover:text-black/60'}`}
+            onClick={() => setActiveTab("design")}
+          >
+            Design
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-[#Fdfbf7]">
+          {activeTab === "content" ? (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Recipient Name</label>
+                <input 
+                  type="text" 
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Your Name</label>
+                <input 
+                  type="text" 
+                  value={sender}
+                  onChange={(e) => setSender(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Headline</label>
+                <input 
+                  type="text" 
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Background Music (YouTube URL)</label>
+                <input 
+                  type="text" 
+                  value={youtubeUrl}
+                  onChange={(e) => setYoutubeUrl(e.target.value)}
+                  placeholder="https://youtube.com/watch?v=..."
+                  className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest">Primary Message</label>
+                <textarea 
+                  ref={textRef}
+                  rows={4}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onSelect={handleSelect}
+                  onKeyUp={handleSelect}
+                  onMouseUp={handleSelect}
+                  className="w-full px-3 py-2.5 rounded-lg border border-black/10 bg-white text-sm focus:outline-none focus:border-primary-burgundy transition-colors resize-none"
+                  placeholder="Write your heart out..."
+                />
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <div className="space-y-3">
+                <label className="text-xs font-bold text-black/40 uppercase tracking-widest block">Theme Template</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button onClick={() => setTemplate("classic")} className={`h-20 rounded-lg border-2 ${template === 'classic' ? 'border-primary-wine' : 'border-black/10'} bg-white flex items-center justify-center relative overflow-hidden`}>
+                     {template === 'classic' && <span className="absolute inset-x-0 top-0 h-8 bg-primary-wine/10" />}
+                     <span className={`text-xs font-medium ${template === 'classic' ? 'text-primary-wine mt-2' : 'text-black/60'} relative z-10`}>Classic</span>
+                  </button>
+                  <button onClick={() => setTemplate("cinematic")} className={`h-20 rounded-lg border-2 ${template === 'cinematic' ? 'border-primary-wine' : 'border-black/10'} bg-white flex items-center justify-center relative overflow-hidden`}>
+                     {template === 'cinematic' && <span className="absolute inset-x-0 top-0 h-8 bg-primary-wine/10" />}
+                     <span className={`text-xs font-medium ${template === 'cinematic' ? 'text-primary-wine mt-2' : 'text-black/60'} relative z-10`}>Cinematic</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </div>
+
+        <div className="p-4 border-t border-black/10 shrink-0 bg-white grid grid-cols-2 md:grid-cols-2 gap-2 pb-8 md:pb-4 relative">
+          <button onClick={() => handleSave('draft')} disabled={saving} className="py-2.5 rounded-lg bg-gray-100 text-black/70 font-medium text-sm flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors disabled:opacity-50">
+            <Save size={16} /> Save Draft
+          </button>
+          <button onClick={() => handleSave('published')} disabled={saving} className="py-2.5 rounded-lg bg-primary-wine text-white font-medium text-sm flex items-center justify-center gap-2 hover:bg-primary-burgundy transition-colors shadow-md disabled:opacity-50">
+            <Share size={16} /> Publish
+          </button>
+          {/* Mobile Preview Button */}
+          <button 
+            onClick={() => setShowMobilePreview(true)} 
+            className="md:hidden col-span-2 py-3 rounded-lg bg-black text-white font-medium text-sm flex items-center justify-center gap-2 mt-2 shadow-xl"
+          >
+            <Play size={16} /> View Preview
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Preview Area */}
+      <div className={`flex-1 bg-[#EBE5D9] relative flex-col items-center overflow-hidden ${showMobilePreview ? 'flex' : 'hidden md:flex'}`}>
+        
+        {/* Mobile Back to Edit Button */}
+        {showMobilePreview && (
+          <button 
+            onClick={() => setShowMobilePreview(false)}
+            className="md:hidden absolute top-6 left-6 z-40 bg-white text-black px-4 py-2 rounded-full shadow-lg font-medium text-sm flex items-center gap-2"
+          >
+            <ArrowLeft size={16} /> Edit
+          </button>
+        )}
+        
+        {/* Preview Toolbar */}
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 p-1 bg-white/80 backdrop-blur-md rounded-full shadow-lg border border-black/5">
+          <button 
+            onClick={() => setPreviewMode("mobile")}
+            className={`px-4 py-1.5 rounded-full text-xs font-medium transition-colors ${previewMode === 'mobile' ? 'bg-black text-white' : 'text-black/60 hover:bg-black/5'}`}
+          >
+            Mobile
+          </button>
+          <button 
+            onClick={() => setPreviewMode("desktop")}
+            className={`px-4 py-1.5 rounded-full text-xs font-medium transition-colors ${previewMode === 'desktop' ? 'bg-black text-white' : 'text-black/60 hover:bg-black/5'}`}
+          >
+            Desktop
+          </button>
+        </div>
+
+        {/* Device Frame */}
+        <div className="w-full h-full p-6 pt-24 pb-12 flex justify-center overflow-y-auto custom-scrollbar">
+          <motion.div 
+            layout
+            initial={false}
+            animate={{ 
+              width: previewMode === 'mobile' ? 390 : '100%',
+              maxWidth: previewMode === 'desktop' ? 1024 : 390,
+              borderRadius: previewMode === 'mobile' ? 40 : 16
+            }}
+            className="h-fit min-h-[844px] bg-[#FDFBF7] shadow-2xl border-[8px] border-white relative overflow-hidden transform origin-top shrink-0"
+          >
+             
+             {/* Mock Content based on state */}
+             <div className="absolute inset-0 bg-gradient-to-b from-[#2B0810]/5 to-transparent h-64 pointer-events-none" />
+             
+             <FloatingElements emotion={emotion} />
+
+             <div className="p-8 flex flex-col items-center text-center mt-12 relative z-10">
+               <div className="w-24 h-24 rounded-full bg-gray-200 border-4 border-white shadow-lg mb-6 overflow-hidden">
+                  <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=80&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+               </div>
+               
+               <p className="font-display italic text-[#4A0E1B] text-xl mb-2">For {recipient || "Someone Special"}</p>
+               <h1 className={`text-4xl text-[#110B0D] leading-tight mb-8 ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display'}`}>
+                 {title || "A special message..."}
+               </h1>
+
+               <div className={`w-full space-y-4 text-left whitespace-pre-wrap text-black/70 text-lg ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'}`}>
+                 {message || (
+                   <>
+                    <div className="h-4 bg-black/5 rounded w-3/4" />
+                    <div className="h-4 bg-black/5 rounded w-full" />
+                    <div className="h-4 bg-black/5 rounded w-5/6" />
+                   </>
+                 )}
+               </div>
+
+               <div className={`mt-12 text-lg text-center ${emotion === 'sad' ? 'font-cormorant italic text-slate-500' : emotion === 'joyful' ? 'font-quicksand font-bold text-amber-600' : 'font-display italic text-[#8B5E66]'}`}>
+                 {emotion === 'sad' ? 'Sincerely,' : emotion === 'joyful' ? 'Warmest wishes,' : 'With love,'} <br/> 
+                 <span className="text-xl mt-1 block">{sender || "Me"}</span>
+               </div>
+             </div>
+
+          </motion.div>
+        </div>
+
+      </div>
+      
+      <CareAI 
+        context={{ type, recipient, sender, title, message }} 
+        selectedText={selectedText}
+        onInsert={handleInsert}
+        onReplace={handleReplace}
+      />
+      
+      {/* Publish Success Modal */}
+      <AnimatePresence>
+        {publishedSlug && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-primary-wine/40 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 text-center"
+            >
+              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
+                <Share className="text-green-600" size={32} />
+              </div>
+              <h2 className="text-3xl font-display text-primary-wine mb-2">It's Ready.</h2>
+              <p className="text-black/60 font-sans text-sm mb-8">
+                Your experience has been beautifully crafted and published. It is now live at the link below.
+              </p>
+              
+              <div className="bg-gray-50 rounded-xl p-4 border border-black/5 flex flex-col items-center gap-3 mb-8">
+                <span className="font-sans font-medium text-primary-wine select-all text-sm sm:text-base break-all">
+                  {window.location.origin}/e/{publishedSlug}
+                </span>
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${window.location.origin}/e/${publishedSlug}`);
+                    alert("Link copied to clipboard!");
+                  }}
+                  className="px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-black/80 transition-colors flex items-center gap-2"
+                >
+                  <Share size={14} /> Copy Link
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <button 
+                  onClick={() => window.open(`/e/${publishedSlug}`, '_blank')}
+                  className="w-full py-3 bg-primary-wine text-white rounded-xl font-medium hover:bg-primary-burgundy transition-colors"
+                >
+                  View Live Experience
+                </button>
+                <button 
+                  onClick={() => router.push('/dashboard')}
+                  className="w-full py-3 bg-white text-black/60 border border-black/10 rounded-xl font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Go to Dashboard
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </main>
+  );
+}
+
+export default function ExperienceBuilder() {
+  return (
+    <Suspense fallback={<div className="h-screen w-full bg-gray-50 flex items-center justify-center">Loading editor...</div>}>
+      <ExperienceBuilderContent />
+    </Suspense>
+  );
+}
