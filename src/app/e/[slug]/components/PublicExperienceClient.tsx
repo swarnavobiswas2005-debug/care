@@ -222,7 +222,7 @@ export default function PublicExperienceClient({
       <button 
         onClick={toggleAudio}
         className={`fixed top-8 right-8 z-50 p-4 rounded-full backdrop-blur-md transition-all ${
-          isDark ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-black/5 text-black hover:bg-black/10'
+          isCinematic ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-black/5 text-black hover:bg-black/10'
         }`}
       >
         {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
@@ -253,7 +253,7 @@ export default function PublicExperienceClient({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2, delay: 0.5 }}
-          className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'} ${isDark ? 'text-white/80' : 'text-black/80'}`}
+          className={`w-full max-w-2xl text-left whitespace-pre-wrap text-lg md:text-xl leading-relaxed ${emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-medium' : 'font-serif'} ${isCinematic ? 'text-white/80' : 'text-black/80'}`}
         >
           {content.message}
         </motion.div>
