@@ -1,0 +1,58 @@
+"use client";
+
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+
+export default function DurgaPujaExperiencePage() {
+  return (
+    <main className="min-h-screen bg-[#FDFBF7] text-[#8B0000] selection:bg-[#8B0000] selection:text-white">
+      <nav className="absolute top-0 w-full p-6 md:p-12 z-50 flex justify-between items-center">
+        <Link href="/experiences" className="flex items-center gap-2 text-[#8B0000]/60 hover:text-[#8B0000] transition-colors text-sm font-medium">
+          <ArrowLeft size={16} /> Back to Experiences
+        </Link>
+        <span className="font-display text-xl tracking-widest text-[#8B0000]">CARE</span>
+      </nav>
+
+      <section className="relative min-h-[100dvh] flex flex-col justify-center items-center overflow-hidden px-6">
+        <div className="absolute inset-0 z-0">
+           <div 
+             className="absolute inset-0 bg-cover bg-center opacity-[0.15] mix-blend-multiply filter sepia-[0.3]"
+             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1605333555547-8a4db95c5dbb?q=40&w=1000&auto=format&fit=crop')" }}
+           />
+           <div className="absolute inset-0 bg-gradient-to-t from-[#FDFBF7] via-[#FDFBF7]/80 to-transparent" />
+        </div>
+
+        <div className="relative z-10 max-w-3xl mx-auto text-center mt-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="text-[#8B0000] text-sm tracking-[0.3em] uppercase mb-8 block font-medium">
+              Limited Edition — Durga Puja
+            </span>
+            <h1 className="text-5xl md:text-7xl font-display leading-[1] text-[#8B0000] mb-8 italic">
+              শুভ শারদীয়া
+            </h1>
+            <p className="text-xl text-[#8B0000]/70 font-sans max-w-xl mx-auto mb-12">
+              For that special person you want to hold hands with on Ashtami.
+            </p>
+            <button 
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  const isLoggedIn = localStorage.getItem("care_auth") === "true";
+                  window.location.href = isLoggedIn ? "/create/durga-puja" : "/login";
+                }
+              }}
+              className="px-10 py-5 bg-[#8B0000] text-white rounded-full text-lg font-medium hover:bg-[#8B0000]/90 transition-colors shadow-2xl"
+            >
+              Craft Ashtami Letter →
+            </button>
+          </motion.div>
+        </div>
+      </section>
+    </main>
+  );
+}
+

@@ -26,7 +26,7 @@ const EMOTION_CONFIG = {
 
 function determineEmotion(text: string, type?: string): Emotion {
   if (type === "apology") return "sad";
-  if (type === "birthday") return "joyful";
+  if (type === "birthday" || type === "durga-puja") return "joyful";
   if (type === "proposal" || type === "anniversary" || type === "love-letter") return "romantic";
 
   if (!text) return "romantic";
@@ -113,9 +113,11 @@ const FloatingElements = ({ emotion, type }: { emotion: Emotion, type?: string }
           initial={{ y: "-10vh", opacity: 0, rotate: 0 }}
           animate={{ y: "110vh", opacity: [0, 1, 0], rotate: 360 }}
           transition={{ duration: parseFloat(el.animationDuration), repeat: Infinity, delay: parseFloat(el.delay as string) }}
-          className="absolute w-3 h-3 rounded-full"
-          style={{ left: el.left, backgroundColor: ['#FCD34D', '#F87171', '#60A5FA', '#34D399'][el.id % 4] }}
-        />
+          className={type === 'durga-puja' ? "absolute text-2xl" : "absolute w-3 h-3 rounded-full"}
+          style={type === 'durga-puja' ? { left: el.left } : { left: el.left, backgroundColor: ['#FCD34D', '#F87171', '#60A5FA', '#34D399'][el.id % 4] }}
+        >
+          {type === 'durga-puja' && (el.id % 2 === 0 ? '🌸' : '🪔')}
+        </motion.div>
       ))}
     </div>
   );
@@ -293,6 +295,7 @@ export default function PublicExperienceClient({
            content.experienceType === 'anniversary' ? 'Forever yours,' :
            content.experienceType === 'proposal' ? 'Yours eternally,' :
            content.experienceType === 'birthday' ? 'Warmest wishes,' :
+           content.experienceType === 'durga-puja' ? 'পার্মানেন্ট অষ্টমীতে তোমার হাত ধরার পার্টনার' :
            content.experienceType === 'just-because' ? 'Thinking of you,' :
            'With love,'} <br/> 
           <span className="text-3xl mt-2 block">{content.sender || "Me"}</span>

@@ -36,6 +36,14 @@ const experiences = [
     cta: "Craft Something",
     color: "from-[#3D0A14] to-primary-wine",
     image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=40&w=600&auto=format&fit=crop", // Hands heart
+  },
+  {
+    id: "durga-puja",
+    title: "DURGA PUJA (SPECIAL)",
+    description: "For your permanent Ashtami partner.",
+    cta: "Craft Ashtami Letter",
+    color: "from-[#8B0000] to-primary-wine",
+    image: "https://images.unsplash.com/photo-1605333555547-8a4db95c5dbb?q=40&w=600&auto=format&fit=crop", // Festive
   }
 ];
 
