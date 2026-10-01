@@ -509,12 +509,14 @@ function ExperienceBuilderContent() {
              <FloatingElements emotion={emotion} type={type as string} />
 
              <div className="p-8 flex flex-col items-center text-center mt-12 relative z-10">
-               <div className="w-24 h-24 rounded-full bg-gray-200 ring-4 ring-white shadow-lg mb-6 overflow-hidden">
-                  {uploadedImage ? (
-                    <img src={uploadedImage} alt="Profile" className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
-                  )}
+               <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg mb-6 relative bg-white">
+                 <div className="w-full h-full rounded-full overflow-hidden bg-gray-200">
+                    {uploadedImage ? (
+                      <img src={uploadedImage} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" />
+                    )}
+                 </div>
                </div>
                
                <p className={`font-display italic text-xl mb-2 ${template === 'cinematic' ? 'text-white/60' : 'text-[#4A0E1B]'}`}>For {recipient || "Someone Special"}</p>

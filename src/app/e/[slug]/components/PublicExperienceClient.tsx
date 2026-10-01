@@ -292,22 +292,24 @@ export default function PublicExperienceClient({
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="max-w-3xl mx-auto px-6 py-24 flex flex-col items-center text-center relative z-20"
       >
-        <div className="w-40 h-40 rounded-full bg-gray-200 ring-4 ring-white shadow-2xl mb-12 overflow-hidden pointer-events-none">
-           {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) ? (
-             <motion.img 
-               animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}
-               transition={isCinematic ? { duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" } : {}}
-               src={content.uploadedImage} 
-               alt="Profile" 
-               className="w-full h-full object-cover" 
-             />
-           ) : (
-             <motion.div 
-               animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}
-               transition={isCinematic ? { duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" } : {}}
-               className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" 
-             />
-           )}
+        <div className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-12 relative pointer-events-none bg-white">
+          <div className="w-full h-full rounded-full overflow-hidden bg-gray-200">
+             {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) ? (
+               <motion.img 
+                 animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}
+                 transition={isCinematic ? { duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" } : {}}
+                 src={content.uploadedImage} 
+                 alt="Profile" 
+                 className="w-full h-full object-cover" 
+               />
+             ) : (
+               <motion.div 
+                 animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}
+                 transition={isCinematic ? { duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" } : {}}
+                 className="w-full h-full bg-[url('https://images.unsplash.com/photo-1518134346374-184f9d21cb29?q=40&w=400&auto=format&fit=crop')] bg-cover bg-center" 
+               />
+             )}
+          </div>
         </div>
         
         <p className={`font-display italic text-2xl mb-6 transition-colors duration-1000 ${config.textHighlight}`}>
