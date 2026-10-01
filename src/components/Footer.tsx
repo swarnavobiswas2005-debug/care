@@ -65,19 +65,22 @@ export function Footer() {
         <p className="text-primary-ivory/80 font-sans mb-4">
           If you liked this project, please give me a ⭐ on GitHub and follow me!
         </p>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap justify-center gap-4">
           <a href="https://github.com/swarnavobiswas2005-debug/care" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-medium transition-colors border border-white/10 flex items-center gap-2">
             Star Repository
           </a>
           <a href="https://github.com/swarnavobiswas2005-debug" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-primary-ivory hover:bg-white text-primary-wine rounded-full text-sm font-medium transition-colors flex items-center gap-2">
             Follow @swarnavobiswas2005-debug
           </a>
+          <a href="https://www.swarnavo.co.in" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-accent-rose hover:bg-accent-rose/90 text-white rounded-full text-sm font-medium transition-colors flex items-center gap-2">
+            Visit My Portfolio
+          </a>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 gap-6">
         <p className="text-primary-ivory/40 text-sm font-sans flex items-center gap-1">
-          &copy; {new Date().getFullYear()} CARE. All rights reserved. Built with <Heart size={14} className="text-accent-rose mx-1" />
+          &copy; {new Date().getFullYear()} CARE. Built with <Heart size={14} className="text-accent-rose mx-1" /> by <a href="https://www.swarnavo.co.in" target="_blank" rel="noopener noreferrer" className="hover:text-primary-ivory underline underline-offset-2 transition-colors">Swarnavo Biswas</a>
         </p>
         
         <div className="flex items-center gap-6">
