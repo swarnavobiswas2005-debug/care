@@ -296,7 +296,7 @@ export default function PublicExperienceClient({
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="max-w-3xl mx-auto px-6 py-24 flex flex-col items-center text-center relative z-20"
       >
-        <div className={`w-40 h-40 rounded-full bg-gray-200 border-4 border-white shadow-2xl mb-12 overflow-hidden pointer-events-none ${isCinematic ? 'ring-4 ring-white/10 ring-offset-8 ring-offset-[#110B0D]' : ''}`}>
+        <div className="w-40 h-40 rounded-full bg-gray-200 shadow-2xl mb-12 overflow-hidden pointer-events-none">
            {content.uploadedImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) ? (
              <motion.img 
                animate={isCinematic ? { scale: [1, 1.15], filter: ['brightness(1)', 'brightness(0.85)'] } : {}}

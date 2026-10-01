@@ -458,7 +458,7 @@ function ExperienceBuilderContent() {
              <FloatingElements emotion={emotion} type={type as string} />
 
              <div className="p-8 flex flex-col items-center text-center mt-12 relative z-10">
-               <div className={`w-24 h-24 rounded-full bg-gray-200 border-4 border-white shadow-lg mb-6 overflow-hidden ${template === 'cinematic' ? 'ring-2 ring-white/20' : ''}`}>
+               <div className="w-24 h-24 rounded-full bg-gray-200 shadow-lg mb-6 overflow-hidden">
                   {uploadedImage ? (
                     <img src={uploadedImage} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
