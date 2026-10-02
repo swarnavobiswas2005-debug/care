@@ -290,8 +290,19 @@ function ExperienceBuilderContent() {
   };
 
   const handleMessageImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+    let files = Array.from(e.target.files || []);
     if (files.length === 0) return;
+
+    const remainingSlots = 5 - messageImages.length;
+    if (remainingSlots <= 0) {
+      alert("You have reached the maximum limit of 5 pictures.");
+      return;
+    }
+
+    if (files.length > remainingSlots) {
+      alert(`You can only upload ${remainingSlots} more picture(s). The rest will be ignored.`);
+      files = files.slice(0, remainingSlots);
+    }
 
     const newImages: string[] = [];
     let processedCount = 0;
@@ -529,7 +540,7 @@ function ExperienceBuilderContent() {
 
               <div className="space-y-2">
                 <label className="text-xs font-bold text-black/40 uppercase tracking-widest flex items-center justify-between">
-                  <span>Message Pictures (Optional)</span>
+                  <span>Message Pictures (Max 5)</span>
                   <span className="text-[9px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Deletes in 1 week</span>
                 </label>
                 <div className="flex items-center gap-4">
