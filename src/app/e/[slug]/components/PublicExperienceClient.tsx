@@ -262,11 +262,13 @@ export default function PublicExperienceClient({
 
   // The landing cover to require user interaction for audio playback
   if (!hasStarted) {
-    const formattedDate = new Date().toLocaleDateString('en-GB').split('/').join(' . ');
+    const rawDate = new Date();
+    const formattedDateWithSpaces = rawDate.toLocaleDateString('en-GB').split('/').join(' . ');
+    const formattedDateWithoutSpaces = rawDate.toLocaleDateString('en-GB').split('/').join('.');
     
     return (
       <main 
-        className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden select-none bg-gradient-to-br from-[#2b1016] to-[#1e0a0f]"
+        className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden select-none bg-gradient-to-br from-[#381621] to-[#1E090F]"
         onContextMenu={(e) => e.preventDefault()}
       >
         {isHighSpeed ? (
@@ -280,40 +282,40 @@ export default function PublicExperienceClient({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="relative z-40 w-full max-w-lg px-6"
+          className="relative z-40 w-full max-w-[520px] px-6"
         >
           {/* Main Card */}
-          <div className="bg-[#FDFBF7] rounded-[24px] shadow-2xl overflow-hidden relative border border-white/10">
+          <div className="bg-[#FDFBF7] rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden relative border border-white/5">
             {/* Mac Header */}
-            <div className="h-10 bg-[#240d12] flex items-center px-5 gap-2 relative">
-              <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-white/20"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-white/20"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+            <div className="h-12 bg-[#2E131A] flex items-center px-5 gap-2.5 relative">
+              <div className="flex gap-2">
+                <div className="w-3 h-3 rounded-full bg-white/20"></div>
+                <div className="w-3 h-3 rounded-full bg-white/20"></div>
+                <div className="w-3 h-3 rounded-full bg-white/20"></div>
               </div>
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                 <span className="text-white/30 text-[10px] font-mono tracking-widest">for-you.care</span>
+                 <span className="text-[#847378] text-[11px] font-sans font-medium tracking-wide">for-you.care</span>
               </div>
             </div>
 
             {/* Card Content */}
-            <div className="pt-24 pb-20 px-8 flex flex-col items-center text-center">
-              <h2 className="font-serif italic text-3xl text-[#4A1D27] mb-4">
+            <div className="pt-28 pb-24 px-8 flex flex-col items-center text-center">
+              <h2 className="font-serif italic text-3xl md:text-4xl text-[#4A1D27] mb-2">
                 Hey, {content.recipient || "there"}...
               </h2>
-              <h1 className="font-display text-5xl md:text-6xl text-[#110B0D] leading-[1.1] mb-8">
+              <h1 className="font-display text-5xl md:text-[64px] text-[#110B0D] leading-[1.1] mb-6">
                 I wrote you a letter.
               </h1>
               
-              <div className="font-mono text-[11px] font-medium tracking-[0.3em] text-black/40 mb-12">
-                {formattedDate}
+              <div className="font-mono text-xs font-medium tracking-widest text-black/40 mb-12">
+                {formattedDateWithSpaces}
               </div>
 
               <button 
                 onClick={startExperience}
-                className="bg-[#240d12] text-white hover:bg-[#35161f] transition-colors rounded-full px-8 py-4 flex items-center gap-3 font-medium text-sm shadow-xl transform hover:scale-105 duration-300"
+                className="bg-[#391520] text-white hover:bg-[#4A1D2B] transition-colors rounded-full px-8 py-3.5 flex items-center gap-3 font-medium text-[15px] shadow-xl transform hover:scale-105 duration-300"
               >
-                <Heart size={18} fill="currentColor" className="text-pink-100" /> Open My Letter
+                <Heart size={16} fill="currentColor" className="text-white" /> Open My Letter
               </button>
             </div>
           </div>
@@ -324,12 +326,12 @@ export default function PublicExperienceClient({
               initial={{ opacity: 0, y: 20, rotate: -10 }}
               animate={{ opacity: 1, y: 0, rotate: -2 }}
               transition={{ delay: 0.6, duration: 1.2, ease: "easeOut" }}
-              className="absolute -top-6 -right-2 md:-right-10 bg-[#240d12] border border-white/5 text-white rounded-2xl p-2.5 pr-5 flex items-center gap-3 shadow-2xl z-50"
+              className="absolute -top-4 -right-4 md:-right-12 bg-[#2E131A] border border-white/10 text-white rounded-2xl p-2.5 pr-5 flex items-center gap-3 shadow-2xl z-50"
             >
-              <div className="bg-white/10 p-2 rounded-full">
-                <MessageCircle size={14} />
+              <div className="bg-white/10 p-2.5 rounded-full">
+                <MessageCircle size={16} />
               </div>
-              <span className="text-xs font-medium tracking-wide">A message from {content.sender}</span>
+              <span className="text-sm font-medium tracking-wide">A message from {content.sender}</span>
             </motion.div>
           )}
 
@@ -338,14 +340,14 @@ export default function PublicExperienceClient({
               initial={{ opacity: 0, x: -20, rotate: 10 }}
               animate={{ opacity: 1, x: 0, rotate: 4 }}
               transition={{ delay: 0.8, duration: 1.2, ease: "easeOut" }}
-              className="absolute top-1/4 -left-4 md:-left-12 bg-[#35161f] border border-white/5 text-white rounded-2xl p-2.5 pr-4 flex items-center gap-3 shadow-2xl z-50"
+              className="absolute top-1/4 -left-6 md:-left-16 bg-[#391520] border border-white/10 text-white rounded-2xl p-3 pr-5 flex items-center gap-3.5 shadow-2xl z-50"
             >
-              <div className="bg-white/10 p-2.5 rounded-full text-pink-300">
-                <Heart size={14} fill="currentColor" />
+              <div className="bg-white/10 p-2.5 rounded-full text-[#E0909A]">
+                <Heart size={16} fill="currentColor" />
               </div>
-              <div className="flex flex-col text-left pr-1">
-                <span className="text-[9px] text-white/60 uppercase tracking-wider font-semibold">Memories added</span>
-                <span className="text-xs font-bold">{messageImages.length} photo{messageImages.length !== 1 ? 's' : ''}</span>
+              <div className="flex flex-col text-left">
+                <span className="text-[11px] text-white/50 font-medium tracking-wide leading-tight mb-0.5">Memories added</span>
+                <span className="text-[15px] font-semibold leading-tight">{messageImages.length} photo{messageImages.length !== 1 ? 's' : ''}</span>
               </div>
             </motion.div>
           )}
@@ -354,14 +356,14 @@ export default function PublicExperienceClient({
             initial={{ opacity: 0, y: 20, rotate: -5 }}
             animate={{ opacity: 1, y: 0, rotate: 2 }}
             transition={{ delay: 1, duration: 1.2, ease: "easeOut" }}
-            className="absolute -bottom-6 -right-2 md:-right-8 bg-[#2b1016] border border-white/5 text-white rounded-2xl p-2.5 pr-4 flex items-center gap-3 shadow-2xl z-50"
+            className="absolute -bottom-8 -right-4 md:-right-12 bg-[#2E131A] border border-white/10 text-white rounded-2xl p-3 pr-5 flex items-center gap-3.5 shadow-2xl z-50"
           >
-            <div className="bg-white/10 p-2.5 rounded-full text-amber-100">
-              <Calendar size={14} />
+            <div className="bg-white/10 p-2.5 rounded-full text-[#BCA79E]">
+              <Calendar size={16} />
             </div>
-            <div className="flex flex-col text-left pr-1">
-              <span className="text-[9px] text-white/60 uppercase tracking-wider font-semibold">Date created</span>
-              <span className="text-xs font-bold">{formattedDate}</span>
+            <div className="flex flex-col text-left">
+              <span className="text-[11px] text-white/50 font-medium tracking-wide leading-tight mb-0.5">Together since</span>
+              <span className="text-[15px] font-semibold leading-tight">{formattedDateWithoutSpaces}</span>
             </div>
           </motion.div>
 
