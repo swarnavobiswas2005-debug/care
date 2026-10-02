@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
-import { Volume2, VolumeX, Play } from "lucide-react";
+import { Volume2, VolumeX, Play, Download } from "lucide-react";
 import Link from "next/link";
 
 type Emotion = "romantic" | "sad" | "joyful";
@@ -256,6 +256,9 @@ export default function PublicExperienceClient({
   const config = EMOTION_CONFIG[emotion];
   const isCinematic = template === 'cinematic';
   const isDark = isCinematic || emotion === 'sad';
+  
+  const rawMessageImages = content.messageImages || (content.messageImage ? [content.messageImage] : []);
+  const messageImages = rawMessageImages.filter(() => !content.imageExpiresAt || Date.now() < content.imageExpiresAt);
 
   // The landing cover to require user interaction for audio playback
   if (!hasStarted) {
@@ -439,15 +442,48 @@ export default function PublicExperienceClient({
           {content.message}
         </motion.div>
 
-        {content.messageImage && (!content.imageExpiresAt || Date.now() < content.imageExpiresAt) && (
+        {messageImages.length > 0 && (
           <motion.div
             variants={{
               hidden: { opacity: 0, scale: 0.9, y: 20 },
               visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 1.5, ease: "easeOut" } }
             }}
-            className={`w-full max-w-xl mt-16 relative rounded-2xl overflow-hidden shadow-2xl ${isCinematic ? 'ring-4 ring-white/10' : 'border-4 border-white'}`}
+            className={`w-full mt-16 max-w-4xl`}
           >
-            <img src={content.messageImage} alt="Special memory" className="w-full h-auto object-cover" />
+            {messageImages.length === 1 && (
+              <div className={`relative group max-w-xl mx-auto rounded-2xl overflow-hidden shadow-2xl ${isCinematic ? 'ring-4 ring-white/10' : 'border-4 border-white'}`}>
+                <img src={messageImages[0]} alt="Special memory" className="w-full h-auto object-cover" />
+                <a href={messageImages[0]} download="memory.jpg" className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Download size={20} />
+                </a>
+              </div>
+            )}
+
+            {messageImages.length === 2 && (
+              <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
+                {messageImages.map((img, i) => (
+                  <div key={i} className={`relative group rounded-2xl overflow-hidden shadow-2xl ${isCinematic ? 'ring-4 ring-white/10' : 'border-4 border-white'} transform transition-transform hover:scale-105 ${i === 0 ? 'md:-rotate-3' : 'md:rotate-3 md:translate-y-8'} w-full md:w-1/2 max-w-sm`}>
+                    <img src={img} alt="Special memory" className="w-full aspect-[4/5] object-cover" />
+                    <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Download size={20} />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {messageImages.length >= 3 && (
+              <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+                {messageImages.map((img, i) => (
+                  <div key={i} className={`relative group rounded-xl overflow-hidden shadow-xl ${isCinematic ? 'ring-2 ring-white/10' : 'border-2 border-white'} inline-block w-full break-inside-avoid`}>
+                    <img src={img} alt="Special memory" className="w-full h-auto object-cover transform transition-transform duration-700 hover:scale-110" />
+                    <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-3 right-3 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Download size={18} />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
 

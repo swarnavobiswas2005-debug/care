@@ -125,7 +125,7 @@ function ExperienceBuilderContent() {
   const [youtubeEnd, setYoutubeEnd] = useState("");
   const [template, setTemplate] = useState("classic");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [messageImage, setMessageImage] = useState<string | null>(null);
+  const [messageImages, setMessageImages] = useState<string[]>([]);
   const isHighSpeed = useNetworkQuality();
 
   const [isPlaintextLegacy, setIsPlaintextLegacy] = useState(false);
@@ -171,7 +171,12 @@ function ExperienceBuilderContent() {
             setYoutubeEnd(content.youtubeEnd || "");
             setTemplate(data.template || "classic");
             setUploadedImage(content.uploadedImage || null);
-            setMessageImage(content.messageImage || null);
+            
+            const mImages = content.messageImages || [];
+            if (content.messageImage && mImages.length === 0) {
+              mImages.push(content.messageImage);
+            }
+            setMessageImages(mImages);
           }
         })
         .finally(() => setLoading(false));
@@ -197,7 +202,7 @@ function ExperienceBuilderContent() {
       youtubeEnd, 
       experienceType: type,
       uploadedImage,
-      messageImage,
+      messageImages,
       imageExpiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // 1 week
     };
 
@@ -285,33 +290,44 @@ function ExperienceBuilderContent() {
   };
 
   const handleMessageImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
 
-    if (file.size > 10 * 1024 * 1024) {
-      alert("Please upload a picture smaller than 10MB.");
-      return;
-    }
+    const newImages: string[] = [];
+    let processedCount = 0;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new window.Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 800; // larger for message body
-        let scaleSize = 1;
-        if (img.width > MAX_WIDTH) {
-          scaleSize = MAX_WIDTH / img.width;
-        }
-        canvas.width = img.width * scaleSize;
-        canvas.height = img.height * scaleSize;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-        setMessageImage(canvas.toDataURL('image/jpeg', 0.7));
+    files.forEach(file => {
+      if (file.size > 10 * 1024 * 1024) {
+        alert("Please upload pictures smaller than 10MB.");
+        processedCount++;
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 800; // larger for message body
+          let scaleSize = 1;
+          if (img.width > MAX_WIDTH) {
+            scaleSize = MAX_WIDTH / img.width;
+          }
+          canvas.width = img.width * scaleSize;
+          canvas.height = img.height * scaleSize;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+          newImages.push(canvas.toDataURL('image/jpeg', 0.7));
+          
+          processedCount++;
+          if (processedCount === files.length) {
+            setMessageImages(prev => [...prev, ...newImages]);
+          }
+        };
+        img.src = event.target?.result as string;
       };
-      img.src = event.target?.result as string;
-    };
-    reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
+    });
   };
 
   // Selection tracking
@@ -513,22 +529,32 @@ function ExperienceBuilderContent() {
 
               <div className="space-y-2">
                 <label className="text-xs font-bold text-black/40 uppercase tracking-widest flex items-center justify-between">
-                  <span>Message Picture (Optional)</span>
+                  <span>Message Pictures (Optional)</span>
                   <span className="text-[9px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Deletes in 1 week</span>
                 </label>
                 <div className="flex items-center gap-4">
                   <input 
                     type="file" 
                     accept="image/*"
+                    multiple
                     onChange={handleMessageImageUpload}
                     className="w-full text-sm text-black/60 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary-wine/5 file:text-primary-wine hover:file:bg-primary-wine/10 transition-colors"
                   />
-                  {messageImage && (
-                    <button onClick={() => setMessageImage(null)} className="text-xs text-red-500 font-medium whitespace-nowrap hover:underline">
-                      Remove
+                  {messageImages.length > 0 && (
+                    <button onClick={() => setMessageImages([])} className="text-xs text-red-500 font-medium whitespace-nowrap hover:underline">
+                      Remove All
                     </button>
                   )}
                 </div>
+                {messageImages.length > 0 && (
+                  <div className="flex gap-2 mt-2 overflow-x-auto pb-2 custom-scrollbar">
+                    {messageImages.map((img, i) => (
+                      <div key={i} className="relative w-16 h-16 shrink-0 rounded-md overflow-hidden border border-black/10">
+                        <img src={img} className="w-full h-full object-cover" alt="upload" />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
           ) : (
