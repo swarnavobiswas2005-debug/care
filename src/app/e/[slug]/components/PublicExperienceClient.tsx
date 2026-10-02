@@ -152,28 +152,52 @@ const FloatingElements = ({ emotion, type, isCinematic }: { emotion: Emotion, ty
   );
 };
 
+import CryptoJS from "crypto-js";
 import { useNetworkQuality } from "@/hooks/useNetworkQuality";
 
 export default function PublicExperienceClient({ 
-  content, 
+  content: initialContent, 
   template 
 }: { 
   content: any, 
   template: string 
 }) {
+  const [content, setContent] = useState<any>(initialContent.encrypted ? null : initialContent);
+  const [decryptionFailed, setDecryptionFailed] = useState(false);
+
+  useEffect(() => {
+    if (initialContent.encrypted) {
+      const hashKey = window.location.hash.slice(1);
+      if (hashKey && initialContent.ciphertext) {
+        try {
+          const bytes = CryptoJS.AES.decrypt(initialContent.ciphertext, hashKey);
+          const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          setContent(decrypted);
+        } catch (e) {
+          console.error("Failed to decrypt", e);
+          setDecryptionFailed(true);
+        }
+      } else {
+        setDecryptionFailed(true);
+      }
+    }
+  }, [initialContent]);
+
   const [emotion, setEmotion] = useState<Emotion>("romantic");
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isHighSpeed = useNetworkQuality();
 
-  const ytData = getYoutubeData(content.youtubeUrl, content.youtubeStart, content.youtubeEnd);
-  const spotifyData = getSpotifyData(content.youtubeUrl);
+  const ytData = content ? getYoutubeData(content.youtubeUrl, content.youtubeStart, content.youtubeEnd) : null;
+  const spotifyData = content ? getSpotifyData(content.youtubeUrl) : null;
 
   useEffect(() => {
-    // Analyze emotion on mount
-    const fullText = `${content.title || ""} ${content.message || ""}`;
-    setEmotion(determineEmotion(fullText, content.experienceType));
+    if (content) {
+      // Analyze emotion on mount
+      const fullText = `${content.title || ""} ${content.message || ""}`;
+      setEmotion(determineEmotion(fullText, content.experienceType));
+    }
   }, [content]);
 
   useEffect(() => {
@@ -207,6 +231,21 @@ export default function PublicExperienceClient({
       });
     }
   };
+
+  if (decryptionFailed) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#FDFBF7] text-[#110B0D] p-6 text-center">
+        <div>
+          <h1 className="text-3xl font-display mb-4">Letter Locked 🔒</h1>
+          <p className="text-black/60 max-w-md mx-auto">This letter is end-to-end encrypted, but the secret key is missing from the URL. Please ask the sender to share the full link again.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!content) {
+    return <div className="min-h-screen bg-[#FDFBF7]"></div>;
+  }
 
   const containsBengali = (text: string) => /[\u0980-\u09FF]/.test(text || '');
   const titleFont = containsBengali(content.title || "") || content.experienceType === 'durga-puja' ? 'font-bengali' : emotion === 'sad' ? 'font-cormorant' : emotion === 'joyful' ? 'font-quicksand font-bold' : 'font-display';

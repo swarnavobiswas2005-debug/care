@@ -7,6 +7,7 @@ import { ArrowLeft, Save, Play, Settings, Image as ImageIcon, Type, Layout, Shar
 import { motion, AnimatePresence } from "framer-motion";
 import { CareAI } from "@/components/CareAI";
 import { useNetworkQuality } from "@/hooks/useNetworkQuality";
+import CryptoJS from "crypto-js";
 
 type Emotion = "romantic" | "sad" | "joyful";
 
@@ -127,6 +128,10 @@ function ExperienceBuilderContent() {
   const [messageImage, setMessageImage] = useState<string | null>(null);
   const isHighSpeed = useNetworkQuality();
 
+  const [isPlaintextLegacy, setIsPlaintextLegacy] = useState(false);
+  const [encryptionKey, setEncryptionKey] = useState("");
+  const [isLocked, setIsLocked] = useState(false);
+
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -134,7 +139,29 @@ function ExperienceBuilderContent() {
         .then(res => res.json())
         .then(data => {
           if (data && !data.error) {
-            const content = JSON.parse(data.content || "{}");
+            const rawContent = JSON.parse(data.content || "{}");
+            let content = rawContent;
+            
+            if (rawContent.encrypted) {
+              const savedKey = localStorage.getItem(`care_key_${id}`);
+              if (savedKey && rawContent.ciphertext) {
+                try {
+                  const bytes = CryptoJS.AES.decrypt(rawContent.ciphertext, savedKey);
+                  content = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+                  setEncryptionKey(savedKey);
+                } catch (e) {
+                  console.error("Failed to decrypt", e);
+                  setIsLocked(true);
+                  alert("This letter is encrypted and the decryption key is missing or invalid on this device. You will not be able to edit its contents.");
+                }
+              } else {
+                setIsLocked(true);
+                alert("This letter is encrypted and the decryption key is missing or invalid on this device. You will not be able to edit its contents.");
+              }
+            } else {
+              setIsPlaintextLegacy(true);
+            }
+
             setRecipient(content.recipient || "");
             setSender(content.sender || "");
             setTitle(content.title || "");
@@ -154,24 +181,46 @@ function ExperienceBuilderContent() {
   const [publishedSlug, setPublishedSlug] = useState<string | null>(null);
 
   const handleSave = async (status: 'draft' | 'published') => {
+    if (isLocked) {
+      alert("You cannot save changes to a locked encrypted letter.");
+      return;
+    }
     setSaving(true);
+    
+    let contentPayload: any = { 
+      recipient, 
+      sender, 
+      title, 
+      message, 
+      youtubeUrl,
+      youtubeStart,
+      youtubeEnd, 
+      experienceType: type,
+      uploadedImage,
+      messageImage,
+      imageExpiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // 1 week
+    };
+
+    let keyToUse = encryptionKey;
+
+    if (!isPlaintextLegacy) {
+      if (!keyToUse) {
+        // Generate a new random key (e.g. 16 hex bytes)
+        keyToUse = CryptoJS.lib.WordArray.random(16).toString();
+        setEncryptionKey(keyToUse);
+      }
+      const ciphertext = CryptoJS.AES.encrypt(JSON.stringify(contentPayload), keyToUse).toString();
+      contentPayload = {
+        encrypted: true,
+        ciphertext
+      };
+    }
+
     const payload = {
       type,
       template,
       status,
-      content: { 
-        recipient, 
-        sender, 
-        title, 
-        message, 
-        youtubeUrl,
-        youtubeStart,
-        youtubeEnd, 
-        experienceType: type,
-        uploadedImage,
-        messageImage,
-        imageExpiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // 1 week
-      }
+      content: contentPayload
     };
 
     try {
@@ -182,6 +231,7 @@ function ExperienceBuilderContent() {
           body: JSON.stringify(payload),
         });
         const data = await res.json();
+        if (keyToUse) localStorage.setItem(`care_key_${id}`, keyToUse);
         if (status === 'published') setPublishedSlug(data.slug);
       } else {
         const res = await fetch("/api/experiences", {
@@ -191,6 +241,7 @@ function ExperienceBuilderContent() {
         });
         const data = await res.json();
         if (data.id) {
+          if (keyToUse) localStorage.setItem(`care_key_${data.id}`, keyToUse);
           if (status === 'published') {
             setPublishedSlug(data.slug);
           } else {
@@ -653,11 +704,11 @@ function ExperienceBuilderContent() {
               
               <div className="bg-gray-50 rounded-xl p-4 border border-black/5 flex flex-col items-center gap-3 mb-8">
                 <span className="font-sans font-medium text-primary-wine select-all text-sm sm:text-base break-all">
-                  {window.location.origin}/e/{publishedSlug}
+                  {window.location.origin}/e/{publishedSlug}{encryptionKey ? `#${encryptionKey}` : ''}
                 </span>
                 <button 
                   onClick={() => {
-                    navigator.clipboard.writeText(`${window.location.origin}/e/${publishedSlug}`);
+                    navigator.clipboard.writeText(`${window.location.origin}/e/${publishedSlug}${encryptionKey ? `#${encryptionKey}` : ''}`);
                     alert("Link copied to clipboard!");
                   }}
                   className="px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-black/80 transition-colors flex items-center gap-2"
@@ -668,7 +719,7 @@ function ExperienceBuilderContent() {
 
               <div className="flex flex-col gap-3">
                 <button 
-                  onClick={() => window.open(`/e/${publishedSlug}`, '_blank')}
+                  onClick={() => window.open(`/e/${publishedSlug}${encryptionKey ? `#${encryptionKey}` : ''}`, '_blank')}
                   className="w-full py-3 bg-primary-wine text-white rounded-xl font-medium hover:bg-primary-burgundy transition-colors"
                 >
                   View Live Experience
