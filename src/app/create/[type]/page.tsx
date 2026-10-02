@@ -3,7 +3,7 @@
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense, useRef } from "react";
 import Link from "next/link";
-import { ArrowLeft, Save, Play, Settings, Image as ImageIcon, Type, Layout, Share } from "lucide-react";
+import { ArrowLeft, Save, Play, Settings, Image as ImageIcon, Type, Layout, Share, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CareAI } from "@/components/CareAI";
 import { useNetworkQuality } from "@/hooks/useNetworkQuality";
@@ -687,8 +687,41 @@ function ExperienceBuilderContent() {
                </div>
 
                {messageImages.length > 0 && (
-                 <div className="w-full mt-12 relative rounded-2xl overflow-hidden shadow-xl ring-4 ring-white/10">
-                   <img src={messageImages[0]} alt="Uploaded message" className="w-full h-auto object-cover" />
+                 <div className={`w-full mt-12 max-w-4xl`}>
+                   {messageImages.length === 1 && (
+                     <div className={`relative group max-w-xl mx-auto rounded-2xl overflow-hidden shadow-2xl ${template === 'cinematic' ? 'ring-4 ring-white/10' : 'border-4 border-white'}`}>
+                       <img src={messageImages[0]} alt="Special memory" className="w-full h-auto object-cover" />
+                       <a href={messageImages[0]} download="memory.jpg" className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                         <Download size={20} />
+                       </a>
+                     </div>
+                   )}
+
+                   {messageImages.length === 2 && (
+                     <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
+                       {messageImages.map((img: string, i: number) => (
+                         <div key={i} className={`relative group rounded-2xl overflow-hidden shadow-2xl ${template === 'cinematic' ? 'ring-4 ring-white/10' : 'border-4 border-white'} transform transition-transform hover:scale-105 ${i === 0 ? 'md:-rotate-3' : 'md:rotate-3 md:translate-y-8'} w-full md:w-1/2 max-w-sm`}>
+                           <img src={img} alt="Special memory" className="w-full aspect-[4/5] object-cover" />
+                           <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                             <Download size={20} />
+                           </a>
+                         </div>
+                       ))}
+                     </div>
+                   )}
+
+                   {messageImages.length >= 3 && (
+                     <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+                       {messageImages.map((img: string, i: number) => (
+                         <div key={i} className={`relative group rounded-xl overflow-hidden shadow-xl ${template === 'cinematic' ? 'ring-2 ring-white/10' : 'border-2 border-white'} inline-block w-full break-inside-avoid`}>
+                           <img src={img} alt="Special memory" className="w-full h-auto object-cover transform transition-transform duration-700 hover:scale-110" />
+                           <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-3 right-3 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                             <Download size={18} />
+                           </a>
+                         </div>
+                       ))}
+                     </div>
+                   )}
                  </div>
                )}
 
