@@ -686,9 +686,9 @@ function ExperienceBuilderContent() {
                  )}
                </div>
 
-               {messageImage && (
+               {messageImages.length > 0 && (
                  <div className="w-full mt-12 relative rounded-2xl overflow-hidden shadow-xl ring-4 ring-white/10">
-                   <img src={messageImage} alt="Uploaded message" className="w-full h-auto object-cover" />
+                   <img src={messageImages[0]} alt="Uploaded message" className="w-full h-auto object-cover" />
                  </div>
                )}
 

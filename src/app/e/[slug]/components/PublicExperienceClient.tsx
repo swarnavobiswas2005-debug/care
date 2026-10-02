@@ -257,8 +257,8 @@ export default function PublicExperienceClient({
   const isCinematic = template === 'cinematic';
   const isDark = isCinematic || emotion === 'sad';
   
-  const rawMessageImages = content.messageImages || (content.messageImage ? [content.messageImage] : []);
-  const messageImages = rawMessageImages.filter(() => !content.imageExpiresAt || Date.now() < content.imageExpiresAt);
+  const rawMessageImages: string[] = content.messageImages || (content.messageImage ? [content.messageImage] : []);
+  const messageImages: string[] = rawMessageImages.filter(() => !content.imageExpiresAt || Date.now() < content.imageExpiresAt);
 
   // The landing cover to require user interaction for audio playback
   if (!hasStarted) {
