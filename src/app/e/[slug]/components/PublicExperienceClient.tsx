@@ -532,15 +532,26 @@ export default function PublicExperienceClient({
             )}
 
             {messageImages.length >= 3 && (
-              <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
-                {messageImages.map((img, i) => (
-                  <div key={i} className={`relative group rounded-xl overflow-hidden shadow-xl ${isCinematic ? 'ring-2 ring-white/10' : 'border-2 border-white'} inline-block w-full break-inside-avoid`}>
-                    <img src={img} alt="Special memory" className="w-full h-auto object-cover transform transition-transform duration-700 hover:scale-110" />
-                    <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-3 right-3 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Download size={18} />
-                    </a>
-                  </div>
-                ))}
+              <div className={`grid gap-4 ${messageImages.length === 3 ? 'grid-cols-2' : messageImages.length === 4 ? 'grid-cols-2' : 'grid-cols-6'}`}>
+                {messageImages.map((img: string, i: number) => {
+                  let spanClass = 'col-span-1';
+                  if (messageImages.length === 3) {
+                    spanClass = i === 0 ? 'col-span-2' : 'col-span-1';
+                  } else if (messageImages.length === 4) {
+                    spanClass = 'col-span-1';
+                  } else if (messageImages.length === 5) {
+                    spanClass = i < 2 ? 'col-span-3' : 'col-span-2';
+                  }
+                  
+                  return (
+                    <div key={i} className={`relative group rounded-xl overflow-hidden shadow-xl ${isCinematic ? 'ring-2 ring-white/10' : 'border-2 border-white'} ${spanClass} aspect-square`}>
+                      <img src={img} alt="Special memory" className="w-full h-full object-cover transform transition-transform duration-700 hover:scale-110" />
+                      <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-3 right-3 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Download size={18} />
+                      </a>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </motion.div>
