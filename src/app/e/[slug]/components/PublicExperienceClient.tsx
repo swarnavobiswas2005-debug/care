@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
-import { Volume2, VolumeX, Play, Download } from "lucide-react";
+import { Volume2, VolumeX, Play, Download, Heart, MessageCircle, Calendar } from "lucide-react";
 import Link from "next/link";
 
 type Emotion = "romantic" | "sad" | "joyful";
@@ -262,52 +262,109 @@ export default function PublicExperienceClient({
 
   // The landing cover to require user interaction for audio playback
   if (!hasStarted) {
+    const formattedDate = new Date().toLocaleDateString('en-GB').split('/').join(' . ');
+    
     return (
       <main 
-        className={`min-h-screen flex flex-col items-center justify-center relative overflow-hidden select-none ${isCinematic ? 'bg-[#110B0D] text-white' : 'bg-[#FDFBF7] text-[#110B0D]'}`}
+        className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden select-none bg-gradient-to-br from-[#2b1016] to-[#1e0a0f]"
         onContextMenu={(e) => e.preventDefault()}
       >
-        {isCinematic && (
-          <>
-            {isHighSpeed ? (
-              <div className="fixed inset-0 pointer-events-none z-30 opacity-5 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
-            ) : (
-              <div className="fixed inset-0 pointer-events-none z-30 opacity-20 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000_100%)]" />
-            )}
-          </>
+        {isHighSpeed ? (
+          <div className="fixed inset-0 pointer-events-none z-30 opacity-5 mix-blend-screen bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" style={{ backgroundSize: '100px 100px' }} />
+        ) : (
+          <div className="fixed inset-0 pointer-events-none z-30 opacity-20 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000_100%)]" />
         )}
-        <FloatingElements emotion={emotion} type={content.experienceType} isCinematic={isCinematic} />
+        <FloatingElements emotion={emotion} type={content.experienceType} isCinematic={true} />
+        
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="text-center relative z-10 flex flex-col items-center"
+          className="relative z-40 w-full max-w-lg px-6"
         >
-          <div className={`text-lg md:text-xl tracking-[0.3em] uppercase mb-6 font-medium ${isCinematic ? 'text-white/40' : 'text-black/40'}`}>
-            For {content.recipient || "you"}
-          </div>
-          <div className={`font-display italic text-5xl md:text-7xl mb-12 ${isCinematic ? 'text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]' : 'text-[#4A0E1B]'}`}>
-            A special message
-          </div>
-          <div className="relative inline-block group">
-            <button 
-              onClick={startExperience}
-              className={`inline-flex items-center justify-center px-12 py-5 text-sm font-semibold uppercase tracking-[0.2em] transition-all duration-500 border ${
-                isCinematic 
-                  ? 'bg-transparent border-white text-white hover:bg-white hover:text-black hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]' 
-                  : 'bg-transparent border-[#4A0E1B] text-[#4A0E1B] hover:bg-[#4A0E1B] hover:text-[#FDFBF7] hover:shadow-[0_0_30px_rgba(74,14,27,0.2)]'
-              }`}
-            >
-              <span className="mr-3 relative flex h-3 w-3">
-                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isCinematic ? 'bg-white' : 'bg-[#4A0E1B]'}`}></span>
-                <span className={`relative inline-flex rounded-full h-3 w-3 ${isCinematic ? 'bg-white' : 'bg-[#4A0E1B] group-hover:bg-[#FDFBF7]'}`}></span>
-              </span>
-              TAP TO OPEN
-            </button>
-            <div className={`absolute -bottom-8 right-0 text-2xl font-handwriting -rotate-6 opacity-90 group-hover:-rotate-12 transition-transform duration-500 ${isCinematic ? 'text-white/70' : 'text-[#8B5E66]'}`}>
-              turn on sound...
+          {/* Main Card */}
+          <div className="bg-[#FDFBF7] rounded-[24px] shadow-2xl overflow-hidden relative border border-white/10">
+            {/* Mac Header */}
+            <div className="h-10 bg-[#240d12] flex items-center px-5 gap-2 relative">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                 <span className="text-white/30 text-[10px] font-mono tracking-widest">for-you.care</span>
+              </div>
+            </div>
+
+            {/* Card Content */}
+            <div className="pt-24 pb-20 px-8 flex flex-col items-center text-center">
+              <h2 className="font-serif italic text-3xl text-[#4A1D27] mb-4">
+                Hey, {content.recipient || "there"}...
+              </h2>
+              <h1 className="font-display text-5xl md:text-6xl text-[#110B0D] leading-[1.1] mb-8">
+                I wrote you a letter.
+              </h1>
+              
+              <div className="font-mono text-[11px] font-medium tracking-[0.3em] text-black/40 mb-12">
+                {formattedDate}
+              </div>
+
+              <button 
+                onClick={startExperience}
+                className="bg-[#240d12] text-white hover:bg-[#35161f] transition-colors rounded-full px-8 py-4 flex items-center gap-3 font-medium text-sm shadow-xl transform hover:scale-105 duration-300"
+              >
+                <Heart size={18} fill="currentColor" className="text-pink-100" /> Open My Letter
+              </button>
             </div>
           </div>
+
+          {/* Floating Widgets */}
+          {content.sender && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20, rotate: -10 }}
+              animate={{ opacity: 1, y: 0, rotate: -2 }}
+              transition={{ delay: 0.6, duration: 1.2, ease: "easeOut" }}
+              className="absolute -top-6 -right-2 md:-right-10 bg-[#240d12] border border-white/5 text-white rounded-2xl p-2.5 pr-5 flex items-center gap-3 shadow-2xl z-50"
+            >
+              <div className="bg-white/10 p-2 rounded-full">
+                <MessageCircle size={14} />
+              </div>
+              <span className="text-xs font-medium tracking-wide">A message from {content.sender}</span>
+            </motion.div>
+          )}
+
+          {messageImages.length > 0 && (
+            <motion.div 
+              initial={{ opacity: 0, x: -20, rotate: 10 }}
+              animate={{ opacity: 1, x: 0, rotate: 4 }}
+              transition={{ delay: 0.8, duration: 1.2, ease: "easeOut" }}
+              className="absolute top-1/4 -left-4 md:-left-12 bg-[#35161f] border border-white/5 text-white rounded-2xl p-2.5 pr-4 flex items-center gap-3 shadow-2xl z-50"
+            >
+              <div className="bg-white/10 p-2.5 rounded-full text-pink-300">
+                <Heart size={14} fill="currentColor" />
+              </div>
+              <div className="flex flex-col text-left pr-1">
+                <span className="text-[9px] text-white/60 uppercase tracking-wider font-semibold">Memories added</span>
+                <span className="text-xs font-bold">{messageImages.length} photo{messageImages.length !== 1 ? 's' : ''}</span>
+              </div>
+            </motion.div>
+          )}
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20, rotate: -5 }}
+            animate={{ opacity: 1, y: 0, rotate: 2 }}
+            transition={{ delay: 1, duration: 1.2, ease: "easeOut" }}
+            className="absolute -bottom-6 -right-2 md:-right-8 bg-[#2b1016] border border-white/5 text-white rounded-2xl p-2.5 pr-4 flex items-center gap-3 shadow-2xl z-50"
+          >
+            <div className="bg-white/10 p-2.5 rounded-full text-amber-100">
+              <Calendar size={14} />
+            </div>
+            <div className="flex flex-col text-left pr-1">
+              <span className="text-[9px] text-white/60 uppercase tracking-wider font-semibold">Date created</span>
+              <span className="text-xs font-bold">{formattedDate}</span>
+            </div>
+          </motion.div>
+
         </motion.div>
       </main>
     );
