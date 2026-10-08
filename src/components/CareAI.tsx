@@ -117,10 +117,11 @@ export function CareAI({ context, selectedText, onInsert, onReplace }: CareAIPro
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center justify-center gap-2 px-4 py-3 bg-white/80 backdrop-blur-md border border-black/5 text-primary-wine rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-all group"
+            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-[#FFF5F7] to-[#FFEBF0] backdrop-blur-md border border-rose-200/60 text-[#8B2E42] rounded-full shadow-[0_8px_30px_rgba(225,29,72,0.15)] hover:shadow-[0_8px_40px_rgba(225,29,72,0.25)] transition-all duration-300 group overflow-hidden"
           >
-            <Sparkles size={18} className="text-accent-rose group-hover:scale-110 transition-transform" />
-            <span className="font-medium text-sm">CARE AI</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-rose-200/20 to-pink-200/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <Sparkles size={18} className="text-rose-500 group-hover:scale-110 transition-transform relative z-10" />
+            <span className="font-display font-medium text-[17px] tracking-wide relative z-10 italic">Ask Care AI</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -132,24 +133,25 @@ export function CareAI({ context, selectedText, onInsert, onReplace }: CareAIPro
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed bottom-0 right-0 md:bottom-6 md:right-6 z-50 w-full md:w-[380px] h-[85vh] md:h-[520px] bg-white/90 backdrop-blur-xl md:rounded-3xl shadow-[0_20px_60px_rgb(0,0,0,0.2)] border border-white flex flex-col overflow-hidden origin-bottom-right"
+            className="fixed bottom-0 right-0 md:bottom-6 md:right-6 z-50 w-full md:w-[380px] h-[85vh] md:h-[540px] bg-[#FFFBFB]/95 backdrop-blur-xl md:rounded-[2rem] shadow-[0_20px_60px_rgba(225,29,72,0.15)] border border-rose-100 flex flex-col overflow-hidden origin-bottom-right"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-black/5 bg-white/50 shrink-0">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary-wine/5 flex items-center justify-center">
-                  <Sparkles size={16} className="text-accent-rose" />
+            <div className="flex items-center justify-between p-4 border-b border-rose-100/50 bg-[#FFF5F7]/80 shrink-0 relative overflow-hidden">
+              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none" />
+              <div className="flex items-center gap-3 relative z-10">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-rose-100 to-rose-200 flex items-center justify-center shadow-inner">
+                  <Sparkles size={18} className="text-rose-600" />
                 </div>
                 <div>
-                  <h3 className="font-display font-medium text-primary-wine text-lg leading-none">CARE AI</h3>
-                  <p className="text-[10px] uppercase tracking-wider text-black/40 font-semibold mt-1">Your writing companion</p>
+                  <h3 className="font-display italic text-[#8B2E42] text-xl leading-none">Care AI</h3>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-rose-900/40 font-bold mt-1.5">Your Writing Muse</p>
                 </div>
               </div>
-              <div className="flex items-center gap-1">
-                <button onClick={() => setIsOpen(false)} className="p-2 text-black/40 hover:text-black hover:bg-black/5 rounded-lg transition-colors">
+              <div className="flex items-center gap-1 relative z-10">
+                <button onClick={() => setIsOpen(false)} className="p-2 text-rose-900/40 hover:text-rose-700 hover:bg-rose-100/50 rounded-xl transition-colors">
                   <Minus size={18} />
                 </button>
-                <button onClick={() => setIsOpen(false)} className="p-2 text-black/40 hover:text-black hover:bg-black/5 rounded-lg transition-colors">
+                <button onClick={() => setIsOpen(false)} className="p-2 text-rose-900/40 hover:text-rose-700 hover:bg-rose-100/50 rounded-xl transition-colors">
                   <X size={18} />
                 </button>
               </div>
@@ -157,40 +159,40 @@ export function CareAI({ context, selectedText, onInsert, onReplace }: CareAIPro
 
             {/* Context Indicator */}
             {selectedText && (
-              <div className="bg-accent-rose/10 px-4 py-2 text-xs font-medium text-primary-wine border-b border-accent-rose/10 flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-accent-rose animate-pulse" />
+              <div className="bg-rose-50 px-4 py-2.5 text-xs font-medium text-rose-700 border-b border-rose-100 flex items-center gap-2 shadow-sm relative z-10">
+                <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
                 Working with selected text
               </div>
             )}
 
             {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-gradient-to-b from-[#FFFBFB] to-rose-50/30">
               {messages.map((msg) => (
                 <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                   <div 
-                    className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm ${
+                    className={`max-w-[85%] px-4 py-3 rounded-2xl text-[15px] leading-relaxed font-serif ${
                       msg.role === 'user' 
-                        ? 'bg-primary-wine text-white rounded-tr-sm' 
-                        : 'bg-white border border-black/5 text-black/80 rounded-tl-sm shadow-sm'
+                        ? 'bg-gradient-to-r from-rose-500 to-rose-400 text-white rounded-tr-sm shadow-md' 
+                        : 'bg-white/80 border border-rose-100 text-[#5C1B29] rounded-tl-sm shadow-sm'
                     }`}
                   >
                     {msg.text}
                   </div>
                   
                   {msg.role === 'assistant' && msg.isSuggestion && (
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-wrap gap-2 mt-2.5">
                       <button 
                         onClick={() => onInsert(msg.text)}
-                        className="px-3 py-1.5 bg-black/5 hover:bg-black/10 text-black text-xs font-medium rounded-lg transition-colors"
+                        className="px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[13px] font-medium rounded-lg transition-colors border border-rose-100/50 shadow-sm"
                       >
                         Insert
                       </button>
                       {selectedText && (
                         <button 
                           onClick={() => onReplace(msg.text)}
-                          className="px-3 py-1.5 bg-accent-rose/10 hover:bg-accent-rose/20 text-primary-wine text-xs font-medium rounded-lg transition-colors"
+                          className="px-3.5 py-1.5 bg-gradient-to-r from-rose-100 to-pink-100 hover:from-rose-200 hover:to-pink-200 text-[#8B2E42] text-[13px] font-medium rounded-lg transition-colors shadow-sm"
                         >
-                          Replace
+                          Replace selection
                         </button>
                       )}
                     </div>
@@ -200,9 +202,9 @@ export function CareAI({ context, selectedText, onInsert, onReplace }: CareAIPro
               
               {loading && (
                 <div className="flex items-start">
-                  <div className="px-4 py-3 bg-white border border-black/5 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2 text-black/50 text-sm">
-                    <Loader2 size={14} className="animate-spin" />
-                    CARE AI is thinking...
+                  <div className="px-5 py-3.5 bg-white/80 border border-rose-100 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-3 text-rose-900/60 text-sm font-serif italic">
+                    <Loader2 size={16} className="animate-spin text-rose-400" />
+                    Care AI is thinking...
                   </div>
                 </div>
               )}
@@ -216,7 +218,7 @@ export function CareAI({ context, selectedText, onInsert, onReplace }: CareAIPro
                   <button 
                     key={action}
                     onClick={() => handleSend(action)}
-                    className="whitespace-nowrap px-3 py-1.5 border border-black/10 rounded-full text-xs text-black/60 hover:border-black/30 hover:text-black transition-colors"
+                    className="whitespace-nowrap px-4 py-2 border border-rose-200/60 bg-white/50 rounded-full text-[13px] font-medium text-rose-900/60 hover:border-rose-300 hover:text-rose-700 hover:bg-rose-50 transition-colors shadow-sm"
                   >
                     {action}
                   </button>
@@ -225,23 +227,23 @@ export function CareAI({ context, selectedText, onInsert, onReplace }: CareAIPro
             )}
 
             {/* Input Area */}
-            <div className="p-4 bg-white/50 border-t border-black/5 shrink-0">
-              <div className="relative flex items-end bg-white border border-black/10 rounded-2xl shadow-sm focus-within:border-primary-burgundy focus-within:ring-1 focus-within:ring-primary-burgundy transition-all">
+            <div className="p-4 bg-gradient-to-b from-white/40 to-white/95 border-t border-rose-100/60 shrink-0 relative z-10 backdrop-blur-sm">
+              <div className="relative flex items-end bg-white border border-rose-200 rounded-[1.25rem] shadow-[0_2px_15px_rgba(225,29,72,0.06)] focus-within:border-rose-300 focus-within:ring-4 focus-within:ring-rose-100/50 transition-all">
                 <textarea
                   ref={textareaRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask CARE AI..."
-                  className="w-full max-h-32 bg-transparent text-sm px-4 py-3 rounded-2xl resize-none focus:outline-none placeholder:text-black/30"
+                  placeholder="Ask Care AI for writing advice..."
+                  className="w-full max-h-32 bg-transparent text-[15px] px-5 py-3.5 rounded-[1.25rem] resize-none focus:outline-none placeholder:text-rose-900/30 font-serif"
                   rows={1}
                 />
                 <button 
                   onClick={() => handleSend()}
                   disabled={!input.trim() || loading}
-                  className="mb-1.5 mr-1.5 p-2 bg-primary-wine text-white rounded-xl hover:bg-primary-burgundy transition-colors disabled:opacity-50 disabled:hover:bg-primary-wine shrink-0"
+                  className="mb-1.5 mr-1.5 p-2.5 bg-gradient-to-r from-rose-500 to-rose-400 text-white rounded-xl hover:from-rose-600 hover:to-rose-500 transition-all disabled:opacity-50 disabled:hover:from-rose-500 disabled:hover:to-rose-400 shrink-0 shadow-md hover:shadow-lg hover:-translate-y-0.5"
                 >
-                  <ArrowUp size={16} />
+                  <ArrowUp size={18} />
                 </button>
               </div>
             </div>
