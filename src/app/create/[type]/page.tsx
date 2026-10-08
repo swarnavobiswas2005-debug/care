@@ -691,7 +691,7 @@ function ExperienceBuilderContent() {
                    {messageImages.length === 1 && (
                      <div className={`relative group max-w-xl mx-auto rounded-2xl overflow-hidden shadow-2xl ${template === 'cinematic' ? 'ring-4 ring-white/10' : 'border-4 border-white'}`}>
                        <img src={messageImages[0]} alt="Special memory" className="w-full h-auto object-cover" />
-                       <a href={messageImages[0]} download="memory.jpg" className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                       <a href={messageImages[0]} download="memory.jpg" className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                          <Download size={20} />
                        </a>
                      </div>
@@ -702,7 +702,7 @@ function ExperienceBuilderContent() {
                        {messageImages.map((img: string, i: number) => (
                          <div key={i} className={`relative group rounded-2xl overflow-hidden shadow-2xl ${template === 'cinematic' ? 'ring-4 ring-white/10' : 'border-4 border-white'} transform transition-transform hover:scale-105 ${i === 0 ? 'md:-rotate-3' : 'md:rotate-3 md:translate-y-8'} w-full md:w-1/2 max-w-sm`}>
                            <img src={img} alt="Special memory" className="w-full aspect-[4/5] object-cover" />
-                           <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                           <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                              <Download size={20} />
                            </a>
                          </div>
@@ -725,7 +725,7 @@ function ExperienceBuilderContent() {
                          return (
                            <div key={i} className={`relative group rounded-xl overflow-hidden shadow-xl ${template === 'cinematic' ? 'ring-2 ring-white/10' : 'border-2 border-white'} ${spanClass} aspect-square`}>
                              <img src={img} alt="Special memory" className="w-full h-full object-cover transform transition-transform duration-700 hover:scale-110" />
-                             <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-2 right-2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                             <a href={img} download={`memory-${i}.jpg`} className="absolute bottom-2 right-2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                                <Download size={16} />
                              </a>
                            </div>
